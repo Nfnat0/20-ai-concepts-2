@@ -583,8 +583,10 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const currentCard = document.getElementById(`concept-${activeIndex}`);
       if (currentCard) {
-        const titleJp = currentCard.querySelector('.concept-title-jp').textContent;
-        if (mobileActiveTitle) mobileActiveTitle.textContent = titleJp;
+        const titleJpEl = currentCard.querySelector('.concept-title-jp');
+        if (titleJpEl && mobileActiveTitle) {
+          mobileActiveTitle.textContent = titleJpEl.textContent;
+        }
       }
     }
 
@@ -633,28 +635,33 @@ document.addEventListener('DOMContentLoaded', () => {
   function setupMobileIntersectionObserver() {
     if (observerInstance) return;
 
-    const observerOptions = {
-      root: null,
-      rootMargin: '-30% 0px -45% 0px', // Trigger when card occupies center of screen
-      threshold: 0
-    };
+    try {
+      const observerOptions = {
+        root: null,
+        rootMargin: '-150px 0px -200px 0px', // Safe pixel boundaries for iOS Safari compatibility
+        threshold: 0
+      };
 
-    observerInstance = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const idStr = entry.target.id;
-          const index = parseInt(idStr.replace('concept-', ''), 10);
-          if (!isNaN(index) && index !== activeIndex) {
-            activeIndex = index;
-            updateView();
+      observerInstance = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idStr = entry.target.id;
+            const index = parseInt(idStr.replace('concept-', ''), 10);
+            if (!isNaN(index) && index !== activeIndex) {
+              activeIndex = index;
+              updateView();
+            }
           }
-        }
-      });
-    }, observerOptions);
+        });
+      }, observerOptions);
 
-    cards.forEach((card) => {
-      observerInstance.observe(card);
-    });
+      cards.forEach((card) => {
+        observerInstance.observe(card);
+      });
+    } catch (e) {
+      console.warn("IntersectionObserver failed to initialize: ", e);
+      // Fail gracefully: scrolling will still work, and manual TOC jumps will work.
+    }
   }
 
   function destroyMobileIntersectionObserver() {
