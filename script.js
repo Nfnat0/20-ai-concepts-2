@@ -17,13 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.querySelector('.pc-nav-btn.next');
   
   // Mobile UI elements
-  const mobileToggle = document.querySelector('.mobile-menu-toggle');
-  const mobileTocPanel = document.getElementById('mobileTocPanel');
-  const mobilePanelClose = document.querySelector('.toc-panel-close');
   const mobileActiveTitle = document.querySelector('.mobile-active-title');
   const mobileActiveIndex = document.querySelector('.mobile-active-index');
   const mobileSelect = document.querySelector('.mobile-toc-select');
-  const appContainer = document.querySelector('.app-container');
 
   // Technical Quiz Data (Non-metaphorical, focused on specifications/math)
   const quizData = {
@@ -451,7 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // TOC Item Click handler (both desktop sidebar and mobile overlay)
+  // TOC Item Click handler (desktop sidebar)
   tocItems.forEach((item) => {
     const btn = item.querySelector('button');
     if (!btn) return;
@@ -460,14 +456,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isNaN(targetIndex)) return;
       
       if (isMobile) {
-        closeMobileOverlay();
         const targetCard = document.getElementById(`concept-${targetIndex}`);
-        const viewer = document.querySelector('.app-viewer');
-        if (targetCard && viewer) {
-          viewer.scrollTo({
-            top: targetCard.offsetTop - 15,
-            behavior: 'smooth'
-          });
+        if (targetCard) {
+          scrollToCardTop(targetCard);
         }
       } else {
         // Desktop behavior: change active tab
@@ -501,37 +492,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Mobile Menu Toggle - toggle class on app-container
-  if (mobileToggle) {
-    mobileToggle.addEventListener('click', () => {
-      if (appContainer) {
-        appContainer.classList.toggle('toc-open');
-      }
-    });
-  }
-
-  // Close button inside panel
-  if (mobilePanelClose) {
-    mobilePanelClose.addEventListener('click', () => {
-      closeMobileOverlay();
-    });
-  }
-
   // Mobile Select Navigation dropdown
   if (mobileSelect) {
     mobileSelect.addEventListener('change', (e) => {
       const targetIndex = parseInt(e.target.value, 10);
       if (isNaN(targetIndex)) return;
       
-      closeMobileOverlay();
-      
       const targetCard = document.getElementById(`concept-${targetIndex}`);
-      const viewer = document.querySelector('.app-viewer');
-      if (targetCard && viewer) {
-        viewer.scrollTo({
-          top: targetCard.offsetTop - 15,
-          behavior: 'smooth'
-        });
+      if (targetCard) {
+        scrollToCardTop(targetCard);
       }
     });
   }
@@ -548,18 +517,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (activeIndex < totalConcepts) {
       activeIndex++;
       updateView();
-    }
-  }
-
-  function openMobileOverlay() {
-    if (appContainer) {
-      appContainer.classList.add('toc-open');
-    }
-  }
-
-  function closeMobileOverlay() {
-    if (appContainer) {
-      appContainer.classList.remove('toc-open');
     }
   }
 
@@ -649,6 +606,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } else if (isMobile && !mobileScrollBound) {
       // Setup on initial load if starting in mobile mode
+      cards.forEach((card) => {
+        card.classList.add('active');
+      });
       setupMobileScrollTracking();
     }
   }
@@ -704,7 +664,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const viewer = document.querySelector('.app-viewer');
       if (viewer) {
         viewer.scrollTo({
-          top: cardElement.offsetTop - 15,
+          top: cardElement.offsetTop - 120,
           behavior: 'smooth'
         });
       }
