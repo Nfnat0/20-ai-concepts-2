@@ -18,10 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Mobile UI elements
   const mobileToggle = document.querySelector('.mobile-menu-toggle');
-  const mobileDialog = document.getElementById('mobileTocDialog');
-  const mobileDialogClose = mobileDialog ? mobileDialog.querySelector('.toc-dialog-close') : null;
+  const mobileTocPanel = document.getElementById('mobileTocPanel');
+  const mobilePanelClose = document.querySelector('.toc-panel-close');
   const mobileActiveTitle = document.querySelector('.mobile-active-title');
   const mobileActiveIndex = document.querySelector('.mobile-active-index');
+  const mobileSelect = document.querySelector('.mobile-toc-select');
+  const appContainer = document.querySelector('.app-container');
 
   // Technical Quiz Data (Non-metaphorical, focused on specifications/math)
   const quizData = {
@@ -499,29 +501,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Mobile Menu Toggle - use native dialog API
-  if (mobileToggle && mobileDialog) {
+  // Mobile Menu Toggle - toggle class on app-container
+  if (mobileToggle) {
     mobileToggle.addEventListener('click', () => {
-      if (mobileDialog.open) {
-        mobileDialog.close();
-      } else {
-        mobileDialog.showModal();
+      if (appContainer) {
+        appContainer.classList.toggle('toc-open');
       }
     });
   }
 
-  // Close button inside dialog
-  if (mobileDialogClose && mobileDialog) {
-    mobileDialogClose.addEventListener('click', () => {
-      mobileDialog.close();
+  // Close button inside panel
+  if (mobilePanelClose) {
+    mobilePanelClose.addEventListener('click', () => {
+      closeMobileOverlay();
     });
   }
 
-  // Close dialog when clicking backdrop (outside the sheet)
-  if (mobileDialog) {
-    mobileDialog.addEventListener('click', (e) => {
-      if (e.target === mobileDialog) {
-        mobileDialog.close();
+  // Mobile Select Navigation dropdown
+  if (mobileSelect) {
+    mobileSelect.addEventListener('change', (e) => {
+      const targetIndex = parseInt(e.target.value, 10);
+      if (isNaN(targetIndex)) return;
+      
+      closeMobileOverlay();
+      
+      const targetCard = document.getElementById(`concept-${targetIndex}`);
+      const viewer = document.querySelector('.app-viewer');
+      if (targetCard && viewer) {
+        viewer.scrollTo({
+          top: targetCard.offsetTop - 15,
+          behavior: 'smooth'
+        });
       }
     });
   }
@@ -542,14 +552,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function openMobileOverlay() {
-    if (mobileDialog && !mobileDialog.open) {
-      mobileDialog.showModal();
+    if (appContainer) {
+      appContainer.classList.add('toc-open');
     }
   }
 
   function closeMobileOverlay() {
-    if (mobileDialog && mobileDialog.open) {
-      mobileDialog.close();
+    if (appContainer) {
+      appContainer.classList.remove('toc-open');
     }
   }
 
@@ -598,6 +608,10 @@ document.addEventListener('DOMContentLoaded', () => {
           mobileActiveTitle.textContent = titleJpEl.textContent;
         }
       }
+    }
+
+    if (mobileSelect) {
+      mobileSelect.value = activeIndex.toString();
     }
 
     // 4. Update PC Nav Buttons visibility
