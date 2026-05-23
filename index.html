@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>20 AI Concepts - 図解で学ぶAIの重要コンセプト</title>
+  <meta name="description" content="AIの仕組み、大言語モデル（LLM）の動く原理、モデルの改善手法、および実戦的なAIシステム構築のための20の重要概念を、初心者向け解説、具体例、注意点を交えて詳しく解説する日本語静的Webサイト。">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+      <span class="header-title">20 AI Concepts</span>
+    </div>
+    <div class="header-meta">
+      <span class="header-progress-text">はじめに</span>
+    </div>
+    <div class="header-progress-container">
+      <div class="header-progress-bar"></div>
+    </div>
+  </header>
+
+  <!-- Mobile Quick-Nav Bar (Sticky under header) -->
+  <div class="mobile-nav-bar">
+    <div class="mobile-active-indicator">
+      <span class="mobile-active-index" style="background: var(--color-teal-glow); color: var(--color-teal); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.75rem; font-weight:700;">INTRO</span>
+      <span class="mobile-active-title" style="font-weight: 600; font-size: 0.9rem;">概要と目次</span>
+    </div>
+    <button class="mobile-menu-toggle">目次</button>
+  </div>
+
+  <!-- Mobile TOC Overlay -->
+  <div class="mobile-toc-overlay">
+    <h3 style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; color: var(--text-primary);">全体目次</h3>
+    <ul class="toc-list">
+      <li class="toc-item active" data-index="0">
+        <button><span class="toc-num">0.</span> はじめに (全体概要)</button>
+      </li>
+      
+      <li style="font-size: 0.75rem; color: var(--text-muted); margin-top: 1rem; margin-bottom: 0.25rem; font-weight:700; letter-spacing:0.05em;">PART 1: AIの基礎原理</li>
+      <li class="toc-item" data-index="1"><button><span class="toc-num">1.</span> Neural Networks</button></li>
+      <li class="toc-item" data-index="2"><button><span class="toc-num">2.</span> Tokenization</button></li>
+      <li class="toc-item" data-index="3"><button><span class="toc-num">3.</span> Embeddings</button></li>
+      <li class="toc-item" data-index="4"><button><span class="toc-num">4.</span> Attention</button></li>
+      <li class="toc-item" data-index="5"><button><span class="toc-num">5.</span> Transformers</button></li>
+      
+      <li style="font-size: 0.75rem; color: var(--text-muted); margin-top: 1rem; margin-bottom: 0.25rem; font-weight:700; letter-spacing:0.05em;">PART 2: LLMの仕組み</li>
+      <li class="toc-item" data-index="6"><button><span class="toc-num">6.</span> LLMs</button></li>
+      <li class="toc-item" data-index="7"><button><span class="toc-num">7.</span> Context Window</button></li>
+      <li class="toc-item" data-index="8"><button><span class="toc-num">8.</span> Temperature</button></li>
+      <li class="toc-item" data-index="9"><button><span class="toc-num">9.</span> Hallucination</button></li>
+      <li class="toc-item" data-index="10"><button><span class="toc-num">10.</span> Prompt Engineering</button></li>
+
+      <li style="font-size: 0.75rem; color: var(--text-muted); margin-top: 1rem; margin-bottom: 0.25rem; font-weight:700; letter-spacing:0.05em;">PART 3: モデルの改善・効率化</li>
+      <li class="toc-item" data-index="11"><button><span class="toc-num">11.</span> Transfer Learning</button></li>
+      <li class="toc-item" data-index="12"><button><span class="toc-num">12.</span> Fine-Tuning</button></li>
+      <li class="toc-item" data-index="13"><button><span class="toc-num">13.</span> RLHF</button></li>
+      <li class="toc-item" data-index="14"><button><span class="toc-num">14.</span> LoRA</button></li>
+      <li class="toc-item" data-index="15"><button><span class="toc-num">15.</span> Quantization</button></li>
+
+      <li style="font-size: 0.75rem; color: var(--text-muted); margin-top: 1rem; margin-bottom: 0.25rem; font-weight:700; letter-spacing:0.05em;">PART 4: 実践的なシステム構築</li>
+      <li class="toc-item" data-index="16"><button><span class="toc-num">16.</span> RAG</button></li>
+      <li class="toc-item" data-index="17"><button><span class="toc-num">17.</span> Vector Databases</button></li>
+      <li class="toc-item" data-index="18"><button><span class="toc-num">18.</span> AI Agents</button></li>
+      <li class="toc-item" data-index="19"><button><span class="toc-num">19.</span> Chain of Thought</button></li>
+      <li class="toc-item" data-index="20"><button><span class="toc-num">20.</span> Diffusion Models</button></li>
+    </ul>
+  </div>
+
+  <!-- App Main Content Container -->
+  <div class="app-container">
+
+    <!-- PC Sidebar (ToC) -->
+    <aside class="app-sidebar">
+      <h3 class="sidebar-title">全体目次</h3>
+      <ul class="toc-list">
+        <li class="toc-item active" data-index="0">
+          <button><span class="toc-num">0.</span> はじめに (全体概要)</button>
+        </li>
+        <li style="font-size: 0.7rem; color: var(--text-muted); margin-top: 1rem; margin-bottom: 0.35rem; font-weight:700; letter-spacing:0.05em; padding-left: 0.75rem;">PART 1: AIの基礎原理</li>
+        <li class="toc-item" data-index="1"><button><span class="toc-num">1.</span> Neural Networks</button></li>
+        <li class="toc-item" data-index="2"><button><span class="toc-num">2.</span> Tokenization</button></li>
+        <li class="toc-item" data-index="3"><button><span class="toc-num">3.</span> Embeddings</button></li>
+        <li class="toc-item" data-index="4"><button><span class="toc-num">4.</span> Attention</button></li>
+        <li class="toc-item" data-index="5"><button><span class="toc-num">5.</span> Transformers</button></li>
+        
+        <li style="font-size: 0.7rem; color: var(--text-muted); margin-top: 1.25rem; margin-bottom: 0.35rem; font-weight:700; letter-spacing:0.05em; padding-left: 0.75rem;">PART 2: LLMの仕組み</li>
+        <li class="toc-item" data-index="6"><button><span class="toc-num">6.</span> LLMs</button></li>
+        <li class="toc-item" data-index="7"><button><span class="toc-num">7.</span> Context Window</button></li>
+        <li class="toc-item" data-index="8"><button><span class="toc-num">8.</span> Temperature</button></li>
+        <li class="toc-item" data-index="9"><button><span class="toc-num">9.</span> Hallucination</button></li>
+        <li class="toc-item" data-index="10"><button><span class="toc-num">10.</span> Prompt Engineering</button></li>
+
+        <li style="font-size: 0.7rem; color: var(--text-muted); margin-top: 1.25rem; margin-bottom: 0.35rem; font-weight:700; letter-spacing:0.05em; padding-left: 0.75rem;">PART 3: モデルの改善・効率化</li>
+        <li class="toc-item" data-index="11"><button><span class="toc-num">11.</span> Transfer Learning</button></li>
+        <li class="toc-item" data-index="12"><button><span class="toc-num">12.</span> Fine-Tuning</button></li>
+        <li class="toc-item" data-index="13"><button><span class="toc-num">13.</span> RLHF</button></li>
+        <li class="toc-item" data-index="14"><button><span class="toc-num">14.</span> LoRA</button></li>
+        <li class="toc-item" data-index="15"><button><span class="toc-num">15.</span> Quantization</button></li>
+
+        <li style="font-size: 0.7rem; color: var(--text-muted); margin-top: 1.25rem; margin-bottom: 0.35rem; font-weight:700; letter-spacing:0.05em; padding-left: 0.75rem;">PART 4: 実践的なシステム構築</li>
+        <li class="toc-item" data-index="16"><button><span class="toc-num">16.</span> RAG</button></li>
+        <li class="toc-item" data-index="17"><button><span class="toc-num">17.</span> Vector Databases</button></li>
+        <li class="toc-item" data-index="18"><button><span class="toc-num">18.</span> AI Agents</button></li>
+        <li class="toc-item" data-index="19"><button><span class="toc-num">19.</span> Chain of Thought</button></li>
+        <li class="toc-item" data-index="20"><button><span class="toc-num">20.</span> Diffusion Models</button></li>
+      </ul>
+    </aside>
+
+    <!-- Main Viewer -->
+    <main class="app-viewer">
+      
+      <!-- Cards Wrapper -->
+      <div class="concept-cards-container">
+        
+        <!-- CONCEPT 0: OVERVIEW -->
+        <section class="concept-card active" id="concept-0">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">INTRODUCTION</span>
+              <span>全体概要</span>
+            </div>
+            <h1 class="concept-title-en">20 AI Concepts</h1>
+            <h2 class="concept-title-jp">誰もが使うAIの、誰もが知らない仕組み</h2>
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">日常的に使うAI（ChatGPT、Claude、Cursor、画像生成など）を真に理解し、実務で使いこなすための20の核心的概念を体系的に学ぶ図解Webブック。</p>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI5-xP8aIAAL0YM" alt="AI Concepts Header" class="concept-image">
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5V3.5A2.5 2.5 0 0 1 6.5 1H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z"/></svg>
+              はじめに
+            </span>
+            <div class="detailed-text">
+              <p>世の中の多くの人がAIを毎日使っていますが、<strong>その内部で何が起こっているかを正しく理解している人はごくわずか</strong>です。</p>
+              <p>「トランスフォーマー」「トークン」「埋め込み（エンベディング）」「RAG」「エージェント」……といった言葉が、まるで全員がすでに知っているかのように飛び交っています。しかし、その背景にある「メンタルモデル（直感的な思考の枠組み）」さえ掴めれば、AIの仕組みは決して難解なものではありません。</p>
+              <p>本ブックでは、AIの根本的な基礎から、大規模言語モデル（LLM）の挙動、モデルを実用化・軽量化するための改善技術、そして現代のシステム開発に欠かせない応用構築パターンまで、<strong>4つのパート・計20個のコンセプト</strong>に分けて詳しく解説します。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">💡 ナビゲーションのヒント</span>
+            <div class="box-content">
+              <p><strong>PCで閲覧中の方：</strong><br>
+                画面左右の矢印ボタン（またはキーボードの<strong>「←」「→」キー</strong>）を使うか、左側のサイドバー目次をクリックすることで、前後のコンセプトにスムーズに切り替えることができます。
+              </p>
+              <p style="margin-top: 0.5rem;"><strong>スマートフォンで閲覧中の方：</strong><br>
+                ページを<strong>縦にスクロール</strong>するだけで、すべてのコンセプトを順番に読むことができます。上部に固定表示されるバーから「目次」を開くことで、読みたいセクションに一瞬でジャンプすることも可能です。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 1 -->
+        <section class="concept-card" id="concept-1">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 1: HOW AI ACTUALLY WORKS</span>
+              <span>Concept 1</span>
+            </div>
+            <h1 class="concept-title-en">Neural Networks</h1>
+            <h2 class="concept-title-jp">ニューラルネットワーク</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI58qtEbUAAyrSy" alt="Neural Networks" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">人間の脳を模した多層構造の仕組みで、膨大な「重み（接続強度）」を調整してデータからパターンを学習する、すべてのAIの心臓部。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>ニューラルネットワークは、現代のあらゆるAIモデルを動かしている共通の脳組織です。基本構造は<strong>入力層（Input Layer）</strong>、<strong>隠れ層（Hidden Layers）</strong>、<strong>出力層 (Output Layer)</strong>という複数の「レイヤー」がパイプライン状に接続された構成をしています。</p>
+              <p>データが入力層に入ると、何層もの隠れ層を通過しながら予測結果へと変換され、出力層から出てきます。このとき、ニューロン同士の各接続部には<strong>「重み（Weight）」</strong>と呼ばれる数値が割り当てられています。重みとは、あるニューロンが次のニューロンにどれだけ強い影響を与えるかを調整するスコアです。</p>
+              <p>AIの<strong>「トレーニング（学習）」</strong>とは、正解データと比較しながら、この数十億〜数兆個もの重みの数値を少しずつ微調整し、出力の精度を限界まで高めていくプロセスそのものを指します。この基本構造を極限まで大規模化（スケール）させた結果、現在のGPT-4（パラメータ数は非公開ながら約1.8兆個とされる）やClaude 3といった超高性能AIが誕生しました。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              ニューラルネットワークは、入力された情報（例えば犬の写真のピクセルデータ）に対して、何層もの計算（掛け算と足し算）を繰り返して「これは犬である確率が98%です」という数値を導き出す<strong>超巨大な計算機</strong>のようなものです。人間がルールを手書きで教えるのではなく、AI自身が「重み」を変えながら自らルールを発見します。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              <strong>「スープの味見と調味料の調整」</strong>に似ています。スープ（入力データ）の味を良くするため、塩、醤油、出汁などの量（接続の重み）を少しずつ変えながら味見し、完璧な味（正確な出力）にたどり着くまで調味料のバランスを微調整し続ける作業が「AIのトレーニング」に相当します。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              「人間の脳を模した」と言われますが、AIが<strong>人間と同じように「意識」や「感情」を持って思考しているわけではありません</strong>。実際には、数千億回以上の単純な掛け算・足し算をものすごいスピードで処理している、極めて高度な「数学の塊」です。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 2 -->
+        <section class="concept-card" id="concept-2">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 1: HOW AI ACTUALLY WORKS</span>
+              <span>Concept 2</span>
+            </div>
+            <h1 class="concept-title-en">Tokenization</h1>
+            <h2 class="concept-title-jp">トークン化</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI59HOVbkAA2OOE" alt="Tokenization" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">AIがテキストを読み込む前に、単語やその一部（部分単語）の再利用可能な最小単位「トークン」に分解する前処理。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>AIは人間のようにテキストをそのまま文字として読むことはできません。入力された文章は、まず<strong>「トークン（Token）」</strong>と呼ばれる細かい破片に切り分けられます。</p>
+              <p>この分割は必ずしも「単語ごと」ではありません。頻出する言葉は1つのトークンとして残されますが、複雑な単語や派生語は分解されます。
+                <ul>
+                  <li><code>"playing"</code> （遊んでいる） → <code>"play"</code> + <code>"ing"</code></li>
+                  <li><code>"ChatGPT"</code> → <code>"Chat"</code> + <code>"G"</code> + <code>"PT"</code></li>
+                  <li><code>"dog"</code> （日常的な単語） → <code>"dog"</code>（そのまま1つ）</li>
+                </ul>
+              </p>
+              <p>なぜ単語単位で処理しないのでしょうか？言語は非常に混沌としており、新語やタイポ、複数言語の混在が日常茶飯事だからです。すべての単語を網羅した辞書を作ろうとすると、辞書サイズが無限に膨れ上がって計算が破綻してしまいます。トークンという<strong>「再利用可能なビルディングブロック」</strong>を使うことで、AIは初めて見る新語であっても、知っているパーツの組み合わせに分解して意味を推測できるようになります。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              AIにとってトークンとは<strong>「言葉のレゴブロック」</strong>です。文章を一度ブロック単位にバラバラにしてから処理します。英語における大体の目安として「1トークン ≒ 0.75単語」（1000トークンでおよそ750単語）とされています。日本語の場合、漢字やひらがなの切り分けの都合上、英語よりもトークン数が多く消費されやすい特徴があります。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              日本語の「お好み焼き」という言葉を考えます。「お好み焼き」という一つの巨大な単語を丸ごと記憶するのではなく、<strong>「お好み」＋「焼き」</strong>というパーツ（トークン）に分けるイメージです。こうしておけば、後に「たこ焼き」や「たい焼き」という未知の単語が現れても、「焼き」というパーツから温かい鉄板料理であることを推測可能になります。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              「1トークン ＝ 1文字」や「1トークン ＝ 1単語」では<strong>ありません</strong>。特に日本語や絵文字などは、アルファベットの英語に比べて1文字で複数のトークンを消費することが多く、これがAPIの料金（トークン単位課金）が高くなる原因や、長文の読み込み制限に早く達してしまう要因になります。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 3 -->
+        <section class="concept-card" id="concept-3">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 1: HOW AI ACTUALLY WORKS</span>
+              <span>Concept 3</span>
+            </div>
+            <h1 class="concept-title-en">Embeddings</h1>
+            <h2 class="concept-title-jp">埋め込み（エンベディング）</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI59_uXa0AAxbxR" alt="Embeddings" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">トークンを多次元空間上の座標（数値の配列）に変換し、言葉の「意味の近さや関係性」をベクトルとして表現する技術。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>テキストをトークンに分解した後、AIはそれぞれのトークンを<strong>「埋め込み（Embedding）」</strong>と呼ばれる数字のリスト（ベクトル）に変換します。これにより、言葉の持つ「意味」が数学的な座標にマッピングされます。</p>
+              <p>これは言わば<strong>「言葉のGoogleマップ」</strong>です。
+                <ul>
+                  <li>「医者」と「看護師」は、意味が極めて近いため多次元空間上で隣り合わせにプロットされます。</li>
+                  <li>「医者」と「ピザ」は全く異なる意味を持つため、互いに大きく離れた場所にプロットされます。</li>
+                  <li>数学的な計算が可能になり、有名な例として<strong>「王（King） - 男（Man） + 女（Woman） ≒ 女王（Queen）」</strong>といったベクトルの加減算で関係性を導き出せます。</li>
+                </ul>
+              </p>
+              <p>AIは言葉を綴りや文字として理解しているのではなく、この空間内における「他の言葉との距離と方向」によって意味を解釈しています。この概念こそが、セマンティック検索（意味による検索）、推薦システム、そして外部ドキュメントを検索するRAGシステムの中核技術となっています。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              コンピュータは「赤」と「朱色」が似ていることや、「犬」と「猫」がどちらも身近な動物であることを自発的には理解できません。しかし、言葉を例えば<code>[0.82, -0.15, 0.44...]</code>のような数百〜数千個の数字の並びに置き換えることで、<strong>数値の引き算によって「意味の近さ」を計算できるようになります</strong>。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              映画のジャンルマップをイメージしてください。縦軸を「アクション度」、横軸を「恋愛度」とした2次元のグラフを作ります。『ダイハード』は「アクション度高・恋愛度低」のエリアに、『タイタニック』は「アクション度中・恋愛度高」のエリアにプロットされます。このジャンルの評価基準（軸）を数千個にまで増やしたものが、AIの「埋め込み空間」です。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              埋め込みベクトルは、言葉の辞書的な定義を完全に暗記しているわけではありません。あくまで「他の言葉とどのような文脈で一緒に使われやすいか」という<strong>統計的な位置関係</strong>を示しているに過ぎないため、文脈を考慮しない単体としての細かい事実関係の把握はこれだけでは困難です。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 4 -->
+        <section class="concept-card" id="concept-4">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 1: HOW AI ACTUALLY WORKS</span>
+              <span>Concept 4</span>
+            </div>
+            <h1 class="concept-title-en">Attention</h1>
+            <h2 class="concept-title-jp">注目機構（アテンション）</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI5-MFQaIAAhdVj" alt="Attention" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">文中のどの言葉がどの言葉と強く関連しているかを計算し、文脈に応じた適切な意味（例えば「Apple」が果物か企業か）を判断する仕組み。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>言葉は、文脈によって意味が180度変わります。例えば「アップル」という言葉は：
+                <ul>
+                  <li>「私は<strong>アップル</strong>を食べた」 → 果物のりんご</li>
+                  <li>「私は<strong>アップル</strong>の株を買った」 → テック企業</li>
+                </ul>
+                単なる固定の埋め込み（エンベディング）だけでは、この違いを正確に判定できません。そこで登場したのが<strong>アテンション（Attention）</strong>です。
+              </p>
+              <p>アテンション機構は、文章中のすべての単語が他のすべての単語に「注目」し合い、互いの関連性の強さを動的に計算します。例えば「She bought shares in Apple.」という文では、「Apple」という単語は「shares（株）」や「bought（買った）」という単語に対して強い注目（高い接続スコア）を払います。これにより、モデルは「このAppleは果物ではなく会社である」と正しく推論します。</p>
+              <p>アテンション登場前のAIは、文章を左から右へ1語ずつ順番に読み進めていたため、長い文章の最初の方の内容をすぐに忘れてしまっていました。アテンションは文全体を一望し、関連情報を瞬時に接続できるため、近代AIの限界を大きく突破した革新的ブレイクスルーとなりました。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              アテンションとは、AIが文章を読むときに<strong>「文脈を捉えるために、どの単語とどの単語を結びつけて注目すべきか」を判断する機能</strong>です。人間が「彼が鍵を落としたので、それを拾った」という文を読む際、「それ」が「鍵」を指していると自然に注目して理解するのと同じ処理を計算で実現しています。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              騒がしいパーティー会場での会話（<strong>カクテルパーティー効果</strong>）に似ています。周囲で多くの雑音（他の単語）が聞こえていても、自分に関係のあるキーワード（文脈に沿う関連単語）や、自分の名前が聞こえた瞬間に、意識（アテンション）をその方向に集中させて会話の内容を正しく理解するような仕組みです。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              アテンションは文中の全単語同士のつながりを網羅的に計算するため、<strong>文字数が多くなると計算量が劇的（文字数の2乗）に増えてしまいます</strong>。そのため、一度に大量のテキストを入力すると、コンピュータに非常に大きな処理負荷がかかるという制約があります。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 5 -->
+        <section class="concept-card" id="concept-5">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 1: HOW AI ACTUALLY WORKS</span>
+              <span>Concept 5</span>
+            </div>
+            <h1 class="concept-title-en">Transformers</h1>
+            <h2 class="concept-title-jp">トランスフォーマー</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI5-gFjbIAA8m31" alt="Transformers" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">2017年に発表された「Attention is All You Need」論文を起源とし、テキストを並列処理することで現代の高速かつ高精度なAIを実現した基盤アーキテクチャ。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p><strong>トランスフォーマー（Transformers）</strong>は、ChatGPTやClaude、Geminiなど、今日動作しているほぼすべての主要AIモデルを支える基本的な「アーキテクチャ（設計図）」です。2017年にGoogleの研究者らによって発表された記念碑的な論文『Attention Is All You Need』で提唱されました。</p>
+              <p>それ以前のAIは、テキストを1語ずつ順番に処理する方式（RNN等）だったため、並列計算が難しく、巨大なデータセットの学習に途方もない時間がかかっていました。トランスフォーマーのブレイクスルーは、<strong>「アテンション機構のみを採用し、文章全体の全単語を同時に並列処理する」</strong>というアイデアにあります。</p>
+              <p>トランスフォーマーモデルは、入力されたテキストをトークン・埋め込みに変換した後、積み重ねられた「アテンション層」を通過させて処理します。層（レイヤー）が深くなるほど解釈は高度になります。
+                <ul>
+                  <li><strong>初期レイヤー:</strong> 単純な文法や構文の構造を捉える。</li>
+                  <li><strong>中期レイヤー:</strong> 単語同士の意味的な関係性や文脈を解釈する。</li>
+                  <li><strong>深層レイヤー:</strong> 高度な推論や意図の理解を行う。</li>
+                </ul>
+                この並列処理化により、学習速度が飛躍的に向上し、インターネット規模の超巨大データをAIに学習させることが初めて可能になりました。
+              </p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              トランスフォーマーは、現代AIにおける<strong>「万能エンジン」</strong>です。文字情報を順番に読むのではなく、文章全体を「一瞬で画像のようにスキャン」して、そこに含まれるすべての単語の相関関係を同時に計算するため、従来の何十倍ものスピードで賢い文章を読み書きできます。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              <strong>「分業化された巨大翻訳チーム」</strong>のようなものです。本を1行ずつ指で追いながら1人で翻訳する（古い方式）のではなく、本を全員でバラバラに手分けして持ち寄り、文法担当、文脈担当、論理構成担当の各部署（レイヤー）が同時に情報をチェックしながら、最終的な美しい要約や翻訳をチーム全体で一気に作り上げる仕組みに似ています。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              トランスフォーマーは「文章（テキスト）」の処理専用に開発されたものですが、その並列処理性能が優秀すぎるため、現在では<strong>画像（Vision Transformer）、音声、動画、さらにはタンパク質構造の予測など</strong>、テキスト以外のあらゆるデジタルデータの処理にも共通して使われています。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 6 -->
+        <section class="concept-card" id="concept-6">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 2: HOW LLMs WORK</span>
+              <span>Concept 6</span>
+            </div>
+            <h1 class="concept-title-en">LLMs</h1>
+            <h2 class="concept-title-jp">大規模言語モデル</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI5_RfabEAAk_-s" alt="LLMs" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">トランスフォーマーをベースに、ネット上の膨大なテキストを用いて「次のトークンを予測する」というシンプルなタスクを徹底的に学習させた巨大なモデル。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p><strong>LLM（Large Language Model / 大規模言語モデル）</strong>は、トランスフォーマーのアーキテクチャを採用し、ウェブサイト、書籍、Wikipedia、公開ソースコード、ニュース記事などの「数兆トークン」に及ぶ膨大なテキストを学習させたAIモデルです。</p>
+              <p>学習させているタスクは、驚くほどシンプルです。それは<strong>「与えられた文章の、次に来る最も確率の高いトークン（単語の破片）を予測すること」</strong>です。それ以外の命令は基本的には行いません。</p>
+              <p>しかし、この単純な予測タスクを、数千億個以上のパラメータと超巨大なデータを用いて繰り返すと、<strong>「創発（Emergence）」</strong>と呼ばれる不思議な現象が起こります。単なる次の言葉の予測器だったはずのモデルが、突然、文法のルールを理解し、高度な論理的な推論を行い、プログラミング言語を書き、数学を解く能力を自発的に獲得し始めます。この巨大化によって開花した知能が、ChatGPTやClaudeの頭脳です。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              LLMは、スマホの<strong>「予測変換」が超ウルトラ賢くなったもの</strong>だと考えてください。あなたが文字を打ち込むと、AIは「これまでに自分が読んだ全世界のウェブデータから推測して、次に続く確率が最も高い言葉はこれだ」という予測を何度も繰り返し、リアルタイムで滑らかな文章を綴っています。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              「むかしむかし、あるところに」と入力したとき、普通の予測変換は「おじいさん」を提案します。LLMはこれと同じ予測をミリ秒単位で行い、「おじいさんとおばあさんが住んでいました。おじいさんは山へ芝刈りに…」と、物語全体を整合性を保ちながら次々と紡ぎ出すことができます。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              LLMは<strong>「真実を格納したデータベース」ではありません</strong>。AIは「事実として正しいか」を調べて答えているのではなく、あくまで「文脈的・統計的につながる確率が最も高い単語」を計算して出力しているだけです。そのため、真面目な顔をして全くのデタラメを語るハルシネーションが発生します。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 7 -->
+        <section class="concept-card" id="concept-7">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 2: HOW LLMs WORK</span>
+              <span>Concept 7</span>
+            </div>
+            <h1 class="concept-title-en">Context Window</h1>
+            <h2 class="concept-title-jp">コンテキストウィンドウ</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI5_WSCbgAAkyZK" alt="Context Window" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">AIが1回のやり取り（入力プロンプトと出力履歴）で同時に処理・記憶できる情報の最大制限量。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>すべてのAIモデルには、一度の処理で視界に入れることのできるメモリの上限があります。これが<strong>「コンテキストウィンドウ（Context Window）」</strong>です。これには、あなたが送信したメッセージ、AIがこれまでに出力した回答の履歴、そしてシステム指示のすべてが含まれます。</p>
+              <p>このウィンドウサイズは技術の進歩に伴い、劇的に拡大しています。
+                <ul>
+                  <li>初期のGPT-3: 約4,000トークン（一般的な書籍の数ページ分）</li>
+                  <li>GPT-4: 128,000トークン（本1冊分）</li>
+                  <li>Claude 3: 200,000トークン（小説数冊分）</li>
+                  <li>Gemini 1.5 Pro: 2,000,000トークン（映画数時間分や動画、膨大なソースコード全体）</li>
+                </ul>
+              </p>
+              <p>コンテキストウィンドウが広いほど、一度に大量の資料を読み込ませた質問ができるため有利ですが、1つ大きな罠があります。それが<strong>「Lost in the Middle（中だるみ / 中央での喪失）」</strong>問題です。AIは入力された膨大な文脈のうち、「最初（冒頭）」と「最後（末尾）」の指示には強く注目しますが、「中間部分」に書かれた詳細な指示やデータを無視したり忘れたりしやすいという統計的な欠点を持っています。そのため、ウィンドウの広さがイコール完璧な記憶力を意味するわけではありません。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              コンテキストウィンドウは、AIにとっての<strong>「机の広さ（短期記憶の容量）」</strong>です。机が広いほど、一度にたくさんの資料（長文）を広げて作業できます。しかし、あまりにも多くの書類を広げすぎると、山積みになった資料の真ん中あたりにある重要なメモを見落としてしまう（Lost in the Middle）のと同じ現象がAIにも起こります。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              分厚い小説を丸ごとAIに読み込ませ、「犯人が持っていたナイフのブランドは？」と質問した場合、小説の序盤や結末にそのナイフの描写があれば正しく答えますが、中盤の退屈な日常シーンの中でひっそりと語られていた場合、AIはコンテキストウィンドウ内にはその記述が存在しているにもかかわらず、「わからない」と答えてしまうことがあります。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              「メモリの上限が大きいから、すべてをプロンプトに詰め込んで送信すれば完璧だ」と考えるのは危険です。処理するトークン数が増えるほど応答速度（レイテンシ）は遅くなり、料金も高くなります。さらにLost in the Middleを回避するためにも、<strong>本当に重要な指示は入力の「最初」か「最後」に強調して書く</strong>のが良いプロンプトの鉄則です。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 8 -->
+        <section class="concept-card" id="concept-8">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 2: HOW LLMs WORK</span>
+              <span>Concept 8</span>
+            </div>
+            <h1 class="concept-title-en">Temperature</h1>
+            <h2 class="concept-title-jp">温度パラメーター</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI5__bjbEAAiFI4" alt="Temperature" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">生成されるテキストの「ランダム性（創造性や予測可能性）」を調整する設定値で、0に近いほど確実で硬く、高くなるほど奇抜で多様な回答になる。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>LLMが次のトークンを出力するとき、常に「最も確率が100%に近い、最も安全な単語」だけを順番に選んでいるわけではありません。そのような出力をさせると、AIの文章は非常に単調で、同じ表現を繰り返す退屈なものになってしまいます。そこで、出力時のランダム性を制御するための設定値として<strong>「温度（Temperature）」</strong>が使われます。</p>
+              <p>温度値は一般的に0から2の範囲で設定されます。
+                <ul>
+                  <li><strong>温度 ＝ 0:</strong> 完全な決定論的モード。AIは確率が最も高い「最適で安全な単語」を常に選びます。回答にブレがなくなり、同じプロンプトからは常に同じ結果が返ってきます。</li>
+                  <li><strong>温度 ＝ 1:</strong> バランスモード。適度に確率の低い意外な単語も混ぜるため、自然で人間に近い、クリエイティブで表現豊かな文章が生成されます。</li>
+                  <li><strong>温度 ＝ 2以上:</strong> 完全にカオスなモード。確率が極端に低い単語もランダムに選択されるため、文章としての整合性が破綻し、意味不明な文字の羅列になりやすくなります。</li>
+                </ul>
+              </p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              温度パラメータは、AIにとっての<strong>「冒険度合いを決めるダイヤル」</strong>です。ダイヤルを「0」に絞ると「教科書通りの優等生」、ダイヤルを「1」前後に上げると「アイデア豊かなクリエイター」、さらに上げると「酔っ払って支離滅裂なことを喋る人」のようになります。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              「新しいカレーの隠し味を提案して」と頼んだとします。
+              <ul>
+                <li><strong>温度 0：</strong>「チョコレートやインスタントコーヒーが定番で最も効果的です」（毎回同じ無難な回答）</li>
+                <li><strong>温度 0.8：</strong>「すりおろしたリンゴや、少量の赤ワイン、ハチミツがよく合います」（実用的ながら少しひねりがある回答）</li>
+                <li><strong>温度 1.8：</strong>「砕いたミント味のキャンディーや、炭酸水を試してください」（奇抜すぎて使い物にならない回答）</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              用途に合わせて使い分けることが重要です。プログラミングのコード生成、データの抽出、長文の正確な要約など、<strong>「事実や正確性が極めて重要なタスク」では必ず温度を「0」またはそれに極めて近い値にする</strong>必要があります。一方、小説の執筆や新規事業のアイデアブレストなどでは、温度を「0.7〜1.0」程度に設定するのが効果的です。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 9 -->
+        <section class="concept-card" id="concept-9">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 2: HOW LLMs WORK</span>
+              <span>Concept 9</span>
+            </div>
+            <h1 class="concept-title-en">Hallucination</h1>
+            <h2 class="concept-title-jp">幻覚（ハルシネーション）</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI6ADWQaIAAw9Lq" alt="Hallucination" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">AIが事実に基づかない誤った情報や存在しないソースを、もっともらしく自信満々に作り出して出力してしまう現象。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>AIは嘘をつきます。しかも、非常に自信たっぷりでもっともらしい口調で語るため、一見すると嘘だと見抜けないことがよくあります。この現象を<strong>「ハルシネーション（Hallucination / 幻覚）」</strong>と呼びます。</p>
+              <p>ハルシネーションが起こる理由は、LLMの設計思想そのものにあります。LLMは<strong>「真実を突き止めるためのファクトチェッカー」ではなく、「統計的に最もありそうな文章を作る作文マシン」</strong>だからです。
+                <ul>
+                  <li>「存在しない架空の論文のタイトルや著者名」を綺麗にフォーマットして出力する。</li>
+                  <li>「存在しないプログラミング言語の関数やAPI」をさも実在するかのようにコードに組み込む。</li>
+                  <li>「歴史上の出来事の年月日やディテール」を微妙に歪めて、あたかも史実のように語る。</li>
+                </ul>
+              AIの内部には情報の正誤を確かめる機能（検証ループ）が標準では備わっていません。出力された文章が、トレーニングデータ内の言語パターンに適合していれば、それがどれほど事実に反していても、そのまま滑らかに出力されてしまいます。
+              </p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              AIには<strong>「嘘をついている」「騙そうとしている」という自覚はありません</strong>。AIにとっては、ただ単語を確率順に繋げて「綺麗な文章を作ること」がすべてであるため、知識の穴埋めとして「それっぽい架空のストーリー」をその場で即興で自動作成してしまっている状態です。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              学校の歴史の試験で、全く勉強していない問題が出たときに、白紙で出すのを避けるために、「織田信長の側近にいたとされる架空のポルトガル人宣教師エピソード」を歴史小説のような臨場感たっぷりの文章で書き連ねて、採点者をなんとか騙そうとする生徒の解答用紙のようなものです。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              ハルシネーションはAIの「一時的なバグ」ではありません。確率に基づいて言葉を繋ぐという<strong>LLMの根本的な仕組みそのものに起因する限界</strong>です。そのため、プロンプトの工夫だけで完全にゼロにすることは不可能です。事実確認が必要な重要な決定を下す際には、必ず人間が一次情報を検索してクロスチェックするか、RAG（Concept 16）のような外部データを参照させるシステム設計が必要です。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 10 -->
+        <section class="concept-card" id="concept-10">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 2: HOW LLMs WORK</span>
+              <span>Concept 10</span>
+            </div>
+            <h1 class="concept-title-en">Prompt Engineering</h1>
+            <h2 class="concept-title-jp">プロンプトエンジニアリング</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI6Ao2basAAz7NR" alt="Prompt Engineering" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">AIから望む出力を得るために、役割の付与や具体例の提示など、入力指示文（プロンプト）の書き方や構造を工夫する技術。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>AIへの質問の仕方一つで、返ってくる回答の質は天と地ほどに変わります。同じモデル、同じテーマであっても、インプットの構造を変えるだけで精度やフォーマットが劇的に改善します。この入力設計の手法を<strong>「プロンプトエンジニアリング（Prompt Engineering）」</strong>と呼びます。</p>
+              <p>例えば：
+                <ul>
+                  <li><strong>悪い例：</strong><code>「APIについて説明して」</code><br>→ 範囲が広すぎて、教科書的な退屈で一般的な回答しか得られません。</li>
+                  <li><strong>良い例：</strong><code>「REST APIの認証（Token認証）の仕組みについて、セキュリティ上の利点を交えながら、ジュニア開発者向けにわかりやすく説明してください。最後に簡単なNode.jsのコード例も添付してください。」</code><br>→ 前提、ターゲット、出力フォーマットが明確なため、すぐに実務に使える高品質な回答が得られます。</li>
+                </ul>
+              </p>
+              <p>実用的なプロンプト設計における基本技法として、以下のようなものがあります。
+                <ol>
+                  <li><strong>役割（Role）の付与:</strong> 「あなたはシニアのソフトウェアエンジニアとして振る舞ってください」と指示する。</li>
+                  <li><strong>文脈（Context）の提供:</strong> 「今、社内向けのセキュリティマニュアルを作成しています」など背景を明確にする。</li>
+                  <li><strong>具体例（Few-shot）の提示:</strong> 「以下のようなフォーマットで出力してください。例1：〜、例2：〜」と見本を教える。</li>
+                  <li><strong>段階的思考の要求:</strong> 「ステップ・バイ・ステップで順を追ってロジックを整理してください」と付け加える。</li>
+                </ol>
+              </p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              プロンプトエンジニアリングは、難解な裏コマンドや呪文を覚えることではありません。人間の部下や後輩に指示を出すときと同様に、<strong>「前提条件を明確にし、役割を明確にし、やってほしいこととアウトプットの形式（表、箇条書きなど）を具体的に伝えるコミュニケーションスキル」</strong>です。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              「旅行の計画を立てて」と曖昧に頼むと、AIは世界の主要都市を並べただけの適当なガイドブックを出します。これを「予算15万円、大人2人、2泊3日で沖縄に行きます。運転はできません。海の見えるおすすめカフェを3つと、公共交通機関だけで回れるタイムスケジュールを表形式で作って」と依頼すると、即座に実用的な旅程表が作成されます。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              プロンプトエンジニアリングは非常に強力ですが、<strong>AI自体の根本的な知識不足やロジックの限界（頭の良さ）を超えさせることはできません</strong>。また、AIモデルのアップデートによって最適な書き方のルール（ハック）が変わることもあるため、過度なトリッキーな書き方に頼るより、論理的で明確な文章で指示を書く基本が最も長持ちします。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 11 -->
+        <section class="concept-card" id="concept-11">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 3: HOW AI MODELS IMPROVE</span>
+              <span>Concept 11</span>
+            </div>
+            <h1 class="concept-title-en">Transfer Learning</h1>
+            <h2 class="concept-title-jp">転移学習</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI6AsOtbUAADs6f" alt="Transfer Learning" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">すでに膨大なデータで学習済みの一般モデルが持つ知識をベースとして利用し、別の新しい特定タスクへ応用・適応させるアプローチ。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>AIモデルをゼロからトレーニングするには、天文学的な量のデータと、数億円以上の電気代、そして巨大なスーパーコンピュータのインフラを何週間も稼働させる必要があります。この「ゼロからの事前学習（Pre-training）」は、大企業にしかできません。</p>
+              <p>この問題をスマートに解決するのが<strong>「転移学習（Transfer Learning）」</strong>です。転移学習では、すでに一般知識（言語、物理ルール、一般画像パターン）を網羅的に身につけた巨大な学習済みモデル（基盤モデル）をスタート地点とします。そのモデルが持つ「基礎能力」を流用し、自らが解決したい特定の新しいタスクへ知識を転移させます。</p>
+              <p>この手法により、自前で用意するデータはごく少数で済み、必要な計算コストも数万分の一に抑えることができます。現在、世界中で展開されている様々なAIアプリや専門特化型AIサービスのほぼすべてが、OpenAIやMetaなどが提供するオープンソースまたは商用の基盤モデルをベースにした転移学習によって構築されています。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              転移学習とは、<strong>「学校で一般的な基礎教育を受けた大人を、会社に入ってから専門職として育成する」</strong>プロセスと同じです。言葉も知らない赤ちゃんにいきなり会計業務（特定のタスク）を教えるのは不可能ですが、すでに言葉や数学の読み書きができる大人に会計ソフトの使い方を教えれば、あっという間に習得できるのと同じ合理的な仕組みです。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              すでに<strong>自転車の乗り方（ベースの運動感覚）を知っている人</strong>は、初めてオートバイに乗る時でも、ゼロからバランスの取り方を学ぶ必要はありません。「乗り物でバランスを取る知識」をオートバイの運転という新しいタスクに転移させることで、ごく短い練習時間で運転できるようになります。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              元の基盤モデルが持っている能力があまりにも低かったり、新しいタスクとの乖離が激しすぎたりする場合、うまく知識が機能しないか、かえって性能が悪化する<strong>「負の転移（Negative Transfer）」</strong>と呼ばれる現象が起こることがあります。ベースとなるモデル選びが成否を分けます。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 12 -->
+        <section class="concept-card" id="concept-12">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 3: HOW AI MODELS IMPROVE</span>
+              <span>Concept 12</span>
+            </div>
+            <h1 class="concept-title-en">Fine-Tuning</h1>
+            <h2 class="concept-title-jp">ファイントーニング（微調整）</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI6BN8BasAAKI92" alt="Fine-Tuning" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">転移学習の具体的な手法であり、学習済みの基本モデルに特定分野の専門データを追加で学習させ、その分野に特化したモデルに作り替えるプロセス。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>転移学習という概念を、実際にコンピュータ上で実行する代表的な方法が<strong>「ファインチューニング（Fine-Tuning / 微調整）」</strong>です。</p>
+              <p>一般的な言語能力を持った事前学習済みモデルに対して、ターゲットとなる専門分野の独自のデータセット（例：社内マニュアル、医療カルテ、過去の判例など）を読み込ませ、追加のトレーニングを施します。
+                <ul>
+                  <li><strong>医療特化モデル:</strong> 一般言語モデルに臨床ノートや論文をファインチューニングする。</li>
+                  <li><strong>法律特化モデル:</strong> 過去の契約書や条文データを集中学習させる。</li>
+                  <li><strong>コーディング特化モデル:</strong> 大量のGitHubソースコードを追加学習させる（CursorやGitHub Copilotなど）。</li>
+                </ul>
+                これにより、モデルは汎用的な雑談相手から、その分野の「超専門家」へと進化します。
+              </p>
+              <p>ただし、通常のフルファインチューニングでは、モデル内部にある数百億〜数千億個すべての「重み」を書き換える必要があるため、依然として強力なGPUサーバーと、相応のインフラ構築、データの厳密なキュレーションコストが必要となるのが課題です。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              一般常識をすべて身につけた大学生（事前学習済みモデル）に、ロースクール（法律大学院）の教科書をさらに追加で集中勉強させて、<strong>法律専門の弁護士AI（ファインチューニングされたモデル）へと仕上げるプロセス</strong>です。日常の口調の癖（出力形式）を社内仕様に変える用途にも使われます。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              自社のカスタマーサポート用チャットボットを作る際、過去1万件の「顧客からの問い合わせと、それに対する自社のベテラン社員の模範回答」のペアを用意し、一般のAIモデルに学習させます。これにより、自社製品の専門仕様を答えられるだけでなく、自社らしい丁寧な口調で返信できるAIが完成します。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              プロンプトエンジニアリング（指示出し）との違いを理解しましょう。プロンプトは一時的な「カンペ」を毎回手渡すようなものですが、ファインチューニングは<strong>「AIの脳の接続構造（重みパラメータ）そのものを書き換えて記憶・行動パターンを永続的に改造する」</strong>ため、データの準備や時間、技術的な難易度が格段に上がります。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 13 -->
+        <section class="concept-card" id="concept-13">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 3: HOW AI MODELS IMPROVE</span>
+              <span>Concept 13</span>
+            </div>
+            <h1 class="concept-title-en">RLHF</h1>
+            <h2 class="concept-title-jp">人間からのフィードバックによる強化学習</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI6BRuabsAAoRPd" alt="RLHF" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">AIの出力に対して人間が良し悪しをランク付けし、そのフィードバックを基にAIが「より人間に役立ち、安全で、好ましい回答」を生成できるように訓練するプロセス。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>生の言語モデル（事前学習やファインチューニング直後のモデル）は、単に「ネット上にありそうな次のテキスト」を出力するだけです。そのため、偏見に満ちた言葉を吐いたり、爆弾の作り方を丁寧に教えたり、質問を無視して奇妙なブログ記事を書き始めたりと、人間の役に立つ「会話アシスタント」としては非常に使いづらい状態です。</p>
+              <p>この生のモデルを、人間に寄り添う安全で親切なサービスに調整する技術が<strong>「RLHF（Reinforcement Learning from Human Feedback / 人間からのフィードバックによる強化学習）」</strong>です。</p>
+              <p>RLHFの基本的な流れは以下の通りです。
+                <ol>
+                  <li>AIに同じプロンプトを入力し、複数の異なる回答を生成させる。</li>
+                  <li>人間の評価者がそれらの回答を読み、「どれが最も親切で、正確で、安全か」を順位付けする。</li>
+                  <li>この人間の好みを学習した「報酬モデル（Reward Model）」を作る。</li>
+                  <li>報酬モデルを使って強化学習を行い、AIが「人間に高く評価される回答」を自発的に選んで出力するようモデルを訓練する。</li>
+                </ol>
+                このRLHFという「最後の仕上げ」が施されたことで、ChatGPTやClaudeは初めて親切な相棒として振る舞えるようになりました。
+              </p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              RLHFは、知識を詰め込む勉強ではなく、AIに社会のマナーやルールを教える<strong>「道徳としつけ」のプロセス</strong>です。ただ単に知識が豊富なだけのAIに、「親切に接すること」「危険な質問は断ること」「嘘はつかないこと」といった人間社会の常識を身につけさせます。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              <strong>「犬のしつけ」</strong>に例えられます。犬（AI）がさまざまな行動を取った際、お座りを正しくできたらおやつ（報酬）をあげ、他人に吠えかかったらおやつをあげないというプロセスを繰り返すことで、犬が自発的に「人間が喜ぶお行儀の良い行動」を覚えていく仕組みと同じです。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              RLHFは、回答の「情報の正しさ（ファクト）」を保証するものではありません。人間は<strong>「なんとなく説明が丁寧で、もっともらしく見える回答」を高く評価しがち</strong>であるため、RLHFを経た結果、AIが「さらに堂々と、美しい嘘を語る（＝ハルシネーションを巧妙に隠す）」という副作用が生じることも指摘されています。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 14 -->
+        <section class="concept-card" id="concept-14">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 3: HOW AI MODELS IMPROVE</span>
+              <span>Concept 14</span>
+            </div>
+            <h1 class="concept-title-en">LoRA</h1>
+            <h2 class="concept-title-jp">低ランク適応（LoRA）</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI6ByXNagAIyuhC" alt="LoRA" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">元の巨大なAIモデル本体を凍結したまま、上乗せした極小の追加レイヤーだけを効率的に訓練することで、劇的に少ない計算コストでファインチューニングを行う手法。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>ファインチューニングは強力ですが、数百億パラメータを持つモデル全体をトレーニングするのはコストが高すぎます。この問題を克服するために登場したのが、PEFT（パラメータ効率の良い微調整）と呼ばれるアプローチの代表格である<strong>「LoRA（Low-Rank Adaptation / 低ランク適応）」</strong>です。</p>
+              <p>LoRAの基本アプローチは驚くほどシンプルです。
+                <ul>
+                  <li>元の巨大なモデル本体（事前学習済みの重み）は完全にロックして一切書き換えません（凍結状態）。</li>
+                  <li>モデルの傍らに、元のパラメータ数のわずか「数万分の一」という極めて小さな追加の計算レイヤー（行列）をアタッチします。</li>
+                  <li>学習時には、この追加の小さなレイヤーだけを訓練して書き換えます。</li>
+                </ul>
+                この仕組みの背景には、「ファインチューニングによるモデルの変化は、実は非常にシンプルな低次元（低ランク）の変更に過ぎない」という数学的発見があります。
+              </p>
+              <p>LoRAの登場により、これまで大量の産業用GPUが必要だった学習が、家庭用のグラフィックボード（単一のGPU）やノートPCでも数時間で実行できるようになりました。これにより、世界中の開発者が独自のカスタムモデル（口調の変更、特定スタイルの画像生成など）を自作するオープンソースAIの大爆発が起きました。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              数千ページの辞書（ベースモデル）を一文字ずつ書き換える（フルファインチューニング）のではなく、<strong>辞書は一切汚さず、余白に小さな「付箋（LoRA）」を貼ってそこに特有の書き込みをしていく</strong>イメージです。辞書本体を再印刷する必要がないため、圧倒的に時間もディスク容量も節約できます。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              1つの巨大な標準言語モデルを用意しておき、「丁寧語で話すLoRA」「ギャル風に話すLoRA」「Pythonのコードをバグ修正するLoRA」といった数メガバイト〜数百メガバイトの小さなLoRAファイルを個別に作成します。ユーザーの用途に応じて、頭脳本体の上にこれらのLoRAを「カセット」のようにパチっと付け替えて動作させます。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              LoRAはあくまで「調整レイヤー」に過ぎないため、<strong>モデルの基礎的な推論能力そのものを底上げしたり、全く新しい外国語を一から理解させたりといった「大手術」には向いていません</strong>。それは事前学習の仕事であり、LoRAは特定の表現スタイルやニッチな知識パターンの適応に向いています。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 15 -->
+        <section class="concept-card" id="concept-15">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 3: HOW AI MODELS IMPROVE</span>
+              <span>Concept 15</span>
+            </div>
+            <h1 class="concept-title-en">Quantization</h1>
+            <h2 class="concept-title-jp">量子化</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI6B1rebkAEEKST" alt="Quantization" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">AIモデルの数値データ（重み）の精度を粗くする（例: 32ビットから4ビットへ）ことで、性能低下を最小限に抑えつつ、ファイルサイズを削減し動作に必要なメモリを大幅に減らす技術。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>AIモデルのサイズは年々巨大化しており、動作には膨大なメモリ（VRAM）が必要です。例えば、そのままの精度（32ビット浮動小数点数）でモデルを保存すると、ファイルサイズが数百ギガバイトに及び、データセンターの超高額な設備でしかロードすらできなくなります。このハードルを下げるのが<strong>「量子化（Quantization）」</strong>です。</p>
+              <p>量子化は、モデルの接続強度の数値（パラメータの重み）の「表現の精度（桁数）」を削減します。
+                <ul>
+                  <li><strong>標準 (FP32 / FP16):</strong> 数値を16〜32ビットの非常に細かい小数として表現する。</li>
+                  <li><strong>量子化 (INT8 / INT4):</strong> 数値を8ビットや4ビットといった極めて粗い整数にマッピングする。</li>
+                </ul>
+              パラメータを16ビットから4ビットに削減すると、メモリ使用量とファイルサイズは<strong>物理的に4分の1（32ビットからなら8分の1）</strong>に圧縮されます。
+              </p>
+              <p>驚くべきことに、このように数値を大雑把に丸めても、AIとしての思考能力・生成される回答の質の低下は極めて小さく抑えられることが分かっています。この技術のおかげで、Llamaなどの強力なモデルを個人のMacBookでローカル実行したり、さらにはスマートフォンの内部チップ上で直接AIを動かしたりすることが可能になりました。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              量子化は、高画質な写真を<strong>「見た目の綺麗さをほぼ保ったまま、ファイルサイズを小さく圧縮する」</strong>技術に似ています。小数点以下を何桁も細かく計算していたものを、四捨五入して大雑把な整数にまとめることで、コンピュータの計算の手間と使用するメモリ容量を大幅に削減します。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              お買い物の計算をする際に、1円単位まで細かく「10,482円足す5,291円は…」と精密に計算する（高精度モデル）のではなく、「約1万円足す約5千円だから約1万5千円」（量子化モデル）と頭の中で大雑把に概算するイメージです。多少の誤差は出ますが、買い物の判断としては十分実用的で、かつ圧倒的に早く答えを出せます。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              量子化をやりすぎると（例：2ビットや1ビットなどの極端な精度削減）、さすがにAIの回答品質は急激に劣化し、文脈が崩壊したり同じ単語を繰り返し出力し続けるバグが発生しやすくなります。現在のオープンソース界隈では、性能とサイズのバランスが最も優れている<strong>「4ビットまたは8ビット量子化」</strong>が最も広く愛用されています。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 16 -->
+        <section class="concept-card" id="concept-16">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 4: HOW REAL AI SYSTEMS ARE BUILT</span>
+              <span>Concept 16</span>
+            </div>
+            <h1 class="concept-title-en">RAG</h1>
+            <h2 class="concept-title-jp">検索拡張生成（ラグ）</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI6CZ48awAA-XOY" alt="RAG" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">ユーザーの質問に対して、まず社内文書や最新ネット記事などの外部知識ベースを検索し、ヒットした確実な情報をAIに読み込ませた上で回答を生成させるシステム構成。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>LLMは事前学習時の古いデータしか知らず、訓練後に起きた出来事や、インターネット上に公開されていない企業秘密・プライベートな社内文書のことは全く知りません。また、記憶（パラメータ）だけで回答させると幻覚（ハルシネーション）が生じます。これらを一挙に解決する業界の標準設計が<strong>「RAG（Retrieval-Augmented Generation / 検索拡張生成）」</strong>です。</p>
+              <p>RAGの動作ステップは以下の通りです。
+                <ol>
+                  <li>ユーザーが「今年の我が社の夏季休暇ルールは？」と質問する。</li>
+                  <li>システムがバックグラウンドで、社内の就業規則データベース（外部知識ソース）を自動で検索する。</li>
+                  <li>質問に関連する就業規則のテキスト部分（段落）を瞬時に抽出する。</li>
+                  <li>抽出した文書をAIに対するプロンプトに「添付資料」として埋め込み、<strong>「以下の添付情報を必ず参照して質問に答えてください」</strong>と指示してLLMに送信する。</li>
+                  <li>LLMは手元の資料をもとに回答を作成し、正確な答えを出力する。</li>
+                </ol>
+              </p>
+              <p>RAGの最大のメリットは、社内情報が変わるたびに<strong>莫大な費用をかけてAI自体を再学習（ファインチューニング）させる必要が一切ない点</strong>です。ただ手前のドキュメントファイルを更新するだけで、AIは常に最新かつ正確な回答を出せるようになり、ハルシネーションも大幅に激減します。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              RAGとは、AIにとっての<strong>「カンニングペーパー（オープンブック試験）」</strong>です。何も見ずに自分のあやふやな記憶力だけでテストに回答する（従来のチャット）のではなく、問題を見たあとに教科書（外部データベース）をペラペラとめくって正しい記述を探し出し、「ここにこう書いてあるので、答えはこれです」とカンニングしながら回答する極めて安全な手法です。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              企業の社内ヘルプデスクチャット。新入社員が「社内の経費精算システムのログインURLは？」と尋ねると、RAGシステムが裏側で社内wikiからログイン手順ページを検索して見つけ出し、そのURLとログイン手順をAIに渡すことで、AIが正確なURLを新入社員に回答できます。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              RAGシステムの品質は、AIの賢さよりも、手前の<strong>「検索プログラムがいかに正確に関連書類を見つけてこれるか」</strong>という検索技術の精度に8割方依存します。検索が的外れなゴミ資料を拾ってきた場合、AIは渡されたゴミ資料を信じ込んでしまい、結果として間違った回答を出力することになります。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 17 -->
+        <section class="concept-card" id="concept-17">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 4: HOW REAL AI SYSTEMS ARE BUILT</span>
+              <span>Concept 17</span>
+            </div>
+            <h1 class="concept-title-en">Vector Databases</h1>
+            <h2 class="concept-title-jp">ベクトルデータベース</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI6CiY6b0AA4V5Q" alt="Vector Databases" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">文章やデータを「埋め込み（ベクトル）」形式で格納し、キーワードの一致ではなく「意味の類似度」に基づいて超高速に検索を実行できる特殊なデータベース。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>RAGシステムを動かすためには、数万ページに及ぶ社内ドキュメントの中から、ユーザーの質問に最も近い情報を「ミリ秒単位」で超高速に見つけ出す必要があります。しかし、従来の「文字の部分一致（キーワード検索）」では限界があります。ここで不可欠になるのが<strong>「ベクトルデータベース（Vector Databases）」</strong>です。</p>
+              <p>ベクトルデータベースは、以下のように動作します。
+                <ol>
+                  <li>あらかじめ社内文書のすべての段落を、埋め込み（Concept 3）を使って「意味の多次元座標（ベクトル）」に変換しておく。</li>
+                  <li>その座標データをベクトルデータベースに登録する。</li>
+                  <li>ユーザーから質問が来ると、システムはその質問文自体も埋め込みを使って座標に変換する。</li>
+                  <li>データベース内で、<strong>「質問の座標に最も近い位置にプロットされているドキュメントの座標」</strong>を数学的なベクトル演算（コサイン類似度など）で瞬時に割り出す。</li>
+                  <li>意味が最も近いドキュメントを結果として返す。</li>
+                </ol>
+              </p>
+              <p>これにより、従来のデータベースでは難しかった「言葉のゆらぎ」や「意図の理解」を網羅した検索が可能になります。代表的なツールとして、Pinecone、Qdrant、Weaviate、そしてPostgreSQLの拡張機能であるpgvectorなどがあります。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              従来の検索が「全く同じ文字が書かれているか」を調べるものだとすれば、ベクトルデータベースは<strong>「書かれている文字は違っていても、同じ意味のことを言っているか」</strong>を調べるシステムです。言葉の「ニュアンスの近さ」をコンピュータに計算させて検索させます。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              「心臓病の治療ガイドライン」と検索したとします。
+              <ul>
+                <li><strong>キーワード検索：</strong>「心臓病」「治療」という文字がドンピシャで入っている文書しか見つけられません。</li>
+                <li><strong>ベクトル検索：</strong>「心筋梗塞における循環器ケアの臨床プロトコル」という、検索語の文字自体は1つも一致していないが、意味が極めて近い文書を空間上で近くにあると判定し、見事に見つけてくることができます。</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              ベクトルデータベースは、従来のデータベース（SQLやNoSQL）のように「IDが一致するもの」「10日以内に更新されたもの」「価格が1,000円以下のもの」といった<strong>厳密な条件指定だけでデータをきれいに取り出すのは本来苦手</strong>です。実務のRAGシステムでは、キーワード検索、フィルター条件、ベクトル検索を組み合わせた「ハイブリッド検索」が広く採用されています。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 18 -->
+        <section class="concept-card" id="concept-18">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 4: HOW REAL AI SYSTEMS ARE BUILT</span>
+              <span>Concept 18</span>
+            </div>
+            <h1 class="concept-title-en">AI Agents</h1>
+            <h2 class="concept-title-jp">AIエージェント</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI6D0wRasAA2LCc" alt="AI Agents" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">与えられた目標（ゴール）を達成するために、AI自身が自律的に「計画立案」「行動（ツールの実行）」「結果の観察」「計画修正」のループを繰り返してタスクを遂行するシステム。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>一般的なLLMは「あなたが質問を投げたら、それに対して返事をして終わり（一問一答）」という受動的な対話しかできません。これに対し、ユーザーから「抽象的なゴール」を与えられると、それを達成するために自分で道筋を考えて動き続ける自律システムを<strong>「AIエージェント（AI Agents）」</strong>と呼びます。</p>
+              <p>エージェントは一般的に、以下の自律的な制御ループ（エージェントループ）を回します。
+                <ol>
+                  <li><strong>Think（思考・計画）：</strong> ゴールを達成するためのサブタスク（計画）を立てる。</li>
+                  <li><strong>Act（行動・実行）：</strong> 割り当てられた外部ツール（検索、プログラム実行、ファイル書き込みなど）を動かす。</li>
+                  <li><strong>Observe（観察）：</strong> ツールを実行した結果（エラーが起きたか、成功したか）をチェックする。</li>
+                  <li><strong>Adjust（調整）：</strong> 観察結果に基づいて、うまくいかなければ計画を修正し、次のステップに移る。</li>
+                </ol>
+                このループをタスクが完了するまで自動で繰り返します。AIモデルを「脳」とし、外部APIやターミナルコマンド、Webブラウザなどを「手足（ツール）」として連携させることで、AIはチャットボットの域を超え、実務を片付ける自律的なデジタル労働者へと進化します。
+              </p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              チャットボットが「指示されたことをただ文章で説明するだけのアシスタント」なら、AIエージェントは<strong>「目的を伝えると、自分で考えて代わりにPCを操作して仕事を終わらせてくれる優秀な部下」</strong>です。途中でトラブルやエラーが発生しても、自分で原因を調べてリトライします。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              「コードのバグを修正して」と頼まれたエージェントの行動：
+              <ol>
+                <li>プロジェクト内のコードファイルをスキャンしてエラー箇所を特定する（Think）。</li>
+                <li>バグ部分を修正するコードを書き換える（Act）。</li>
+                <li>テストスクリプトを実行する（Act）。</li>
+                <li>テスト実行ログにエラーが出たのを確認する（Observe）。</li>
+                <li>「修正が不十分だった」と判断し、別の方法でコードを修正して再テストする（Adjust/Repeat）。</li>
+                <li>すべてパスしたのを確認して完了報告する。</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              自律的にループを回すため、<strong>AIがバグや思考のデッドロックに陥り、無限にAPIを叩き続けて数万円以上の高額な利用料金を請求されるリスク</strong>があります。また、誤ってデータベースの削除コマンドを実行してしまうような暴走を防ぐため、重要なステップ（ファイルのデプロイや決済など）では必ず人間の承認を挟む設計（Human-in-the-loop）が強く推奨されます。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 19 -->
+        <section class="concept-card" id="concept-19">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 4: HOW REAL AI SYSTEMS ARE BUILT</span>
+              <span>Concept 19</span>
+            </div>
+            <h1 class="concept-title-en">Chain of Thought</h1>
+            <h2 class="concept-title-jp">思考の連鎖（CoT）</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI6DwTbaYAAToyy" alt="Chain of Thought" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">AIに一足飛びに答えを出させるのではなく、「ステップ・バイ・ステップで順を追って考えさせる」ことで、複雑な論理パズルや計算の正解率を大幅に向上させるプロンプト手法。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>数学の証明や複雑なロジックパズル、込み入ったビジネスの意思決定などをAIに任せると、単純な計算ミスや推論のショートカットによって間違った回答が出力されることが多々あります。これはAIの地頭が悪いからではなく、「すぐに最終決定を出そうとした」ために起こります。これを解決するのが<strong>「Chain of Thought（CoT / 思考の連鎖）」</strong>です。</p>
+              <p>CoTは、最終的な答えを導き出す手前に、必ず<strong>中間的な推論ステップを段階的に出力させるプロセス</strong>を挟みます。
+                <ul>
+                  <li><strong>CoTなし：</strong>「質問：〜〜〜、答え：[即座に結論を出す]」<br>→ 確率的な揺らぎで間違った答えを出しやすい。</li>
+                  <li><strong>CoTあり：</strong>「質問：〜〜〜、考え方：まずステップ1でAを計算し、次にステップ2でBを評価する。よって…、答え：[正しい結論]」<br>→ 途中経過を自分でトークンとして出力しながら解くことで、論理の破綻を防ぐ。</li>
+                </ul>
+              </p>
+              <p>トランスフォーマーモデルは、これまでに自分が出力した文字をもとにして次の文字を計算します。そのため、頭の中だけで暗算させる（CoTなし）よりも、紙のノートに途中式を書き出させる（CoTあり）方が、次の計算の精度が格段に上がるという数学的・アーキテクチャ上の性質を持っています。プロンプトに<strong>「ステップ・バイ・ステップで順を追って考えてください」</strong>と1行付け加えるだけで、正解率が跳ね上がる理由はここにあります。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              人間が難しい算数の文章題を解くときに、頭の中だけで一発で「答えは42」と暗算（CoTなし）しようとすると間違えやすいですが、<strong>「まず最初に時速を分速に直します（式1）…次に距離を掛けます（式2）…よって答えは42です」とノートに書き出す（CoTあり）と間違えないのと同じ原理</strong>を、AIの会話内で行わせるテクニックです。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              「赤のボールが3個、青が4個あります。赤を2個捨てて、青を2倍に増やし、さらに緑を5個買いました。合計のボールの数は？」という問題に対して：
+              <ol>
+                <li>まず最初のボール：赤3 + 青4 = 7個。</li>
+                <li>赤を2個捨てる：赤は3 - 2 = 1個になり、合計は1 + 4 = 5個。</li>
+                <li>青を2倍に増やす：青は4 × 2 = 8個になり、合計は赤1 + 青8 = 9個。</li>
+                <li>緑を5個買う：合計は9 + 5 = 14個。</li>
+                <li>よって答えは14個です。</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              CoTを使うと、AIは思考プロセスを長文で出力するため、<strong>回答に必要なトークン数が激増し、API料金が上がり、応答完了までの待ち時間（レイテンシ）も長くなります</strong>。そのため、「はい」か「いいえ」で即答できる単純な質問や、単語の翻訳タスクなどでCoTを使うのは、コストパフォーマンスの観点から非効率的です。
+            </div>
+          </div>
+        </section>
+
+        <!-- CONCEPT 20 -->
+        <section class="concept-card" id="concept-20">
+          <div class="card-header">
+            <div class="concept-meta">
+              <span class="concept-part">PART 4: HOW REAL AI SYSTEMS ARE BUILT</span>
+              <span>Concept 20</span>
+            </div>
+            <h1 class="concept-title-en">Diffusion Models</h1>
+            <h2 class="concept-title-jp">拡散モデル</h2>
+          </div>
+
+          <div class="concept-image-container">
+            <img src="./20_AI_Concepts_files/HI6D5wDa8AAgUoW" alt="Diffusion Models" class="concept-image">
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              1行まとめ
+            </div>
+            <p class="summary-text">画像にノイズを徐々に加えていく「破壊」プロセスを学習し、その逆方向の「ノイズを徐々に除去して画像を生成する」復元プロセスによって、テキストから美麗な画像を生成する技術。</p>
+          </div>
+
+          <div class="card-section">
+            <span class="section-label">詳しい解説</span>
+            <div class="detailed-text">
+              <p>これまでの概念はテキスト（言語モデル）に関するものでしたが、MidjourneyやStable Diffusionなど、画像生成AIの裏側で動いている主役の技術が<strong>「拡散モデル（Diffusion Models）」</strong>です。その生成プロセスは非常にユニークで直感に反しています。AIは「絵の描き方」を学ぶのではなく、実は<strong>「画像の壊し方（ノイズの加え方）と、その復元方法」</strong>を学習します。</p>
+              <p>拡散モデルの学習と生成ステップは以下の通りです。
+                <ul>
+                  <li><strong>トレーニング（破壊）：</strong> 美しい写真データに対して、段階的にザラザラした「ノイズ（砂嵐）」を加えていき、最終的に完全なノイズにするプロセスをAIに観察させ、どのようにノイズが加えられたかを学習させます（順方向プロセス）。</li>
+                  <li><strong>トレーニング（復元）：</strong> AIに対して、「この砂嵐から、1ステップ分だけノイズを取り除いて少し綺麗な元の画像に戻してみて」という逆の訓練を何百万回も繰り返します（逆方向プロセス）。</li>
+                  <li><strong>画像生成（出現）：</strong> ユーザーが「夕焼けの海を飛ぶカモメ」とプロンプトを入力すると、AIは<strong>「完全な砂嵐の画像」をスタート地点とします</strong>。そこから、プロンプトの指示（夕焼け、海、カモメ）に引っ張られるようにノイズを少しずつ、何十ステップもかけて丁寧に取り除いていきます。すると、何もない砂嵐の中から、まるで写真が浮かび上がるように美しい絵が現れます。</li>
+                </ul>
+              </p>
+              <p>物理学の熱拡散（水の中にインクを落とすとランダムに広がっていく現象）の数式を応用しているため、この名前がつきました。現在では画像生成に留まらず、動画生成（Soraなど）、音声生成、3Dデータの生成、さらには新薬開発におけるタンパク質分子構造の設計など、あらゆる「ビジュアル・物質生成」の基盤技術となっています。</p>
+            </div>
+          </div>
+
+          <div class="info-box beginner">
+            <span class="section-label">初心者向け補足</span>
+            <div class="box-content">
+              拡散モデルは、キャンバスに絵の具で下書きから描く画家ではなく、<strong>荒削りの巨大な大理石の塊（砂嵐ノイズ）から、不要な部分をノミで少しずつ削り落として、最終的に美しい彫刻（画像）を削り出す彫刻家</strong>のようなイメージです。何もないノイズの中に、プロンプトに合致する「絵の輪郭」を段階的に見出していきます。
+            </div>
+          </div>
+
+          <div class="info-box example">
+            <span class="section-label">具体例</span>
+            <div class="box-content">
+              曇ったお風呂場の鏡をイメージしてください。最初は水滴で真っ白に曇って何も見えません（純粋なノイズ）。そこから、手で少しずつ曇りを拭き取っていくと、徐々に後ろの景色が見えてきます。拡散モデルは、この「曇りを綺麗に拭き取る方法」を高度に学習しており、拭き取り方をテキストの指示（例：「富士山が見えるように拭いて」）に合わせてコントロールする仕組みです。
+            </div>
+          </div>
+
+          <div class="info-box warning">
+            <span class="section-label">注意点・誤解</span>
+            <div class="box-content">
+              画像生成AIは、<strong>「ネット上の既存の画像をコラージュのように切り貼りして作っている」わけではありません</strong>。学習によって「絵の描き方のパターン（テクスチャや光の当たり方、物体の形状の確率分布）」を完全にマスターしており、生成時には一切の元画像を模倣せず、完全なノイズの砂嵐から「新しい画像を1からオリジナルで描き出して」います。
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- PC Navigation Arrows -->
+  <button class="pc-nav-btn prev" aria-label="前のコンセプト">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+  </button>
+  <button class="pc-nav-btn next" aria-label="次のコンセプト">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </button>
+
+</body>
+</html>
