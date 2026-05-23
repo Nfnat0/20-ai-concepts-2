@@ -457,11 +457,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isNaN(targetIndex)) return;
       
       if (isMobile) {
-        // Mobile behavior: scroll target card into view (offset managed by scroll-margin-top in CSS)
         closeMobileOverlay();
         const targetCard = document.getElementById(`concept-${targetIndex}`);
-        if (targetCard) {
-          targetCard.scrollIntoView({
+        const viewer = document.querySelector('.app-viewer');
+        if (targetCard && viewer) {
+          viewer.scrollTo({
+            top: targetCard.offsetTop - 15,
             behavior: 'smooth'
           });
         }
@@ -481,10 +482,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isNaN(targetIndex) || targetIndex < 0 || targetIndex > totalConcepts) return;
       
       if (isMobile) {
-        // Mobile behavior: scroll target card into view (offset managed by scroll-margin-top in CSS)
         const targetCard = document.getElementById(`concept-${targetIndex}`);
-        if (targetCard) {
-          targetCard.scrollIntoView({
+        const viewer = document.querySelector('.app-viewer');
+        if (targetCard && viewer) {
+          viewer.scrollTo({
+            top: targetCard.offsetTop - 15,
             behavior: 'smooth'
           });
         }
@@ -637,8 +639,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       const observerOptions = {
-        root: null,
-        rootMargin: '-150px 0px -200px 0px', // Safe pixel boundaries for iOS Safari compatibility
+        root: isMobile ? document.querySelector('.app-viewer') : null,
+        rootMargin: '-50px 0px -100px 0px', // Adjusted for mobile scroll container viewport height
         threshold: 0
       };
 
@@ -674,7 +676,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Helper to scroll to card top nicely
   function scrollToCardTop(cardElement) {
     if (isMobile) {
-      cardElement.scrollIntoView({ behavior: 'smooth' });
+      const viewer = document.querySelector('.app-viewer');
+      if (viewer) {
+        viewer.scrollTo({
+          top: cardElement.offsetTop - 15,
+          behavior: 'smooth'
+        });
+      }
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

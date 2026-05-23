@@ -606,14 +606,29 @@ a {
   :root {
     --header-height: 60px;
   }
+
+  html, body {
+    height: 100%;
+    overflow: hidden; /* Prevent body scrolling */
+  }
   
   .app-container {
     flex-direction: column;
-    padding-top: calc(var(--header-height) + 45px);
+    height: 100vh;
+    overflow: hidden;
+    padding-top: 0;
   }
 
   .app-header {
     padding: 0 1.25rem;
+    position: relative; /* Restores normal document flow */
+    top: auto;
+    left: auto;
+    right: auto;
+    z-index: 100;
+    flex-shrink: 0; /* Prevents compression */
+    -webkit-transform: none !important;
+    transform: none !important;
   }
 
   .header-meta {
@@ -632,14 +647,15 @@ a {
     background-color: var(--bg-sidebar);
     border-bottom: 1px solid var(--border-color);
     padding: 0.6rem 1.25rem;
-    position: fixed;
-    top: var(--header-height);
-    left: 0;
-    right: 0;
+    position: relative; /* Restores normal document flow */
+    top: auto;
+    left: auto;
+    right: auto;
     height: 45px;
-    z-index: 9998;
-    -webkit-transform: translate3d(0, 0, 9998px);
-    transform: translate3d(0, 0, 9998px);
+    z-index: 90;
+    flex-shrink: 0; /* Prevents compression */
+    -webkit-transform: none !important;
+    transform: none !important;
     width: 100%;
   }
 
@@ -705,10 +721,13 @@ a {
     color: var(--color-ink-blue);
   }
 
-  /* Viewer adjustments */
+  /* Viewer adjustments - scroll container */
   .app-viewer {
     margin-left: 0;
     padding: 1.25rem 1rem;
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .concept-cards-container {
