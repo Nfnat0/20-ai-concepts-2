@@ -536,13 +536,16 @@ document.addEventListener('DOMContentLoaded', () => {
   function openMobileOverlay() {
     mobileOverlay.classList.add('show');
     mobileToggle.textContent = '閉じる';
-    document.body.style.overflow = 'hidden'; // Disable page scrolling while TOC is open
+    // Disable scroll on the actual scroll container (app-viewer on mobile)
+    const viewer = document.querySelector('.app-viewer');
+    if (viewer) viewer.style.overflow = 'hidden';
   }
 
   function closeMobileOverlay() {
     mobileOverlay.classList.remove('show');
     mobileToggle.textContent = '目次';
-    document.body.style.overflow = ''; // Re-enable scroll
+    const viewer = document.querySelector('.app-viewer');
+    if (viewer) viewer.style.overflow = '';
   }
 
   // Update visual elements
@@ -619,58 +622,61 @@ document.addEventListener('DOMContentLoaded', () => {
         cards.forEach((card) => {
           card.classList.add('active');
         });
-        setupMobileIntersectionObserver();
+        setupMobileScrollTracking();
       } else {
         // Transition to PC: Re-apply active card hidden states
-        destroyMobileIntersectionObserver();
+        destroyMobileScrollTracking();
         updateView();
       }
-    } else if (isMobile && !observerInstance) {
-      // Setup observer on initial load if starting in mobile mode
-      setupMobileIntersectionObserver();
+    } else if (isMobile && !mobileScrollBound) {
+      // Setup on initial load if starting in mobile mode
+      setupMobileScrollTracking();
     }
   }
 
-  // Intersection Observer for Mobile Scrolling
-  let observerInstance = null;
+  // Mobile scroll tracking (replaces IntersectionObserver for iOS compatibility)
+  let mobileScrollBound = false;
 
-  function setupMobileIntersectionObserver() {
-    if (observerInstance) return;
+  function setupMobileScrollTracking() {
+    if (mobileScrollBound) return;
+    const viewer = document.querySelector('.app-viewer');
+    if (!viewer) return;
 
-    try {
-      const observerOptions = {
-        root: isMobile ? document.querySelector('.app-viewer') : null,
-        rootMargin: '-50px 0px -100px 0px', // Adjusted for mobile scroll container viewport height
-        threshold: 0
-      };
-
-      observerInstance = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idStr = entry.target.id;
-            const index = parseInt(idStr.replace('concept-', ''), 10);
-            if (!isNaN(index) && index !== activeIndex) {
-              activeIndex = index;
-              updateView();
-            }
-          }
+    let ticking = false;
+    viewer.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveFromScroll(viewer);
+          ticking = false;
         });
-      }, observerOptions);
+        ticking = true;
+      }
+    }, { passive: true });
+    mobileScrollBound = true;
+  }
 
-      cards.forEach((card) => {
-        observerInstance.observe(card);
-      });
-    } catch (e) {
-      console.warn("IntersectionObserver failed to initialize: ", e);
-      // Fail gracefully: scrolling will still work, and manual TOC jumps will work.
+  function updateActiveFromScroll(viewer) {
+    const scrollTop = viewer.scrollTop;
+    const offset = 120; // Account for sticky header + nav bar height
+    let newIndex = 0;
+
+    for (let i = cards.length - 1; i >= 0; i--) {
+      if (cards[i].offsetTop - offset <= scrollTop) {
+        const idStr = cards[i].id;
+        newIndex = parseInt(idStr.replace('concept-', ''), 10);
+        break;
+      }
+    }
+
+    if (!isNaN(newIndex) && newIndex !== activeIndex) {
+      activeIndex = newIndex;
+      updateView();
     }
   }
 
-  function destroyMobileIntersectionObserver() {
-    if (observerInstance) {
-      observerInstance.disconnect();
-      observerInstance = null;
-    }
+  function destroyMobileScrollTracking() {
+    // Scroll listeners with { passive: true } are lightweight; no cleanup needed.
+    // mobileScrollBound stays true to prevent re-binding.
   }
 
   // Helper to scroll to card top nicely
