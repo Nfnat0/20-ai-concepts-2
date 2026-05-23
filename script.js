@@ -671,6 +671,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Helper to scroll to card top nicely
+  function scrollToCardTop(cardElement) {
+    if (isMobile) {
+      cardElement.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
   // Technical Quiz System Functions
   function initializeQuizzes() {
     Object.keys(quizData).forEach((conceptId) => {
@@ -678,7 +687,64 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!card) return;
 
       const quizList = quizData[conceptId];
+
+      // 1. Wrap existing content (except header/footer-nav) in card-content-wrapper
+      const wrapper = document.createElement('div');
+      wrapper.className = 'card-content-wrapper';
       
+      const children = Array.from(card.children);
+      children.forEach((child) => {
+        if (!child.classList.contains('card-header') && !child.classList.contains('card-footer-nav')) {
+          wrapper.appendChild(child);
+        }
+      });
+      
+      const footerNav = card.querySelector('.card-footer-nav');
+      if (footerNav) {
+        card.insertBefore(wrapper, footerNav);
+      } else {
+        card.appendChild(wrapper);
+      }
+
+      // 2. Add Tabs (Explanation / Quiz)
+      const tabsContainer = document.createElement('div');
+      tabsContainer.className = 'card-tabs';
+      
+      const contentTab = document.createElement('button');
+      contentTab.className = 'card-tab active';
+      contentTab.textContent = '解説';
+      contentTab.setAttribute('data-tab', 'content');
+      
+      const quizTab = document.createElement('button');
+      quizTab.className = 'card-tab';
+      quizTab.textContent = '理解度テスト';
+      quizTab.setAttribute('data-tab', 'quiz');
+      
+      tabsContainer.appendChild(contentTab);
+      tabsContainer.appendChild(quizTab);
+      
+      const headerEl = card.querySelector('.card-header');
+      if (headerEl) {
+        headerEl.parentNode.insertBefore(tabsContainer, headerEl.nextSibling);
+      } else {
+        card.insertBefore(tabsContainer, wrapper);
+      }
+
+      contentTab.addEventListener('click', () => {
+        contentTab.classList.add('active');
+        quizTab.classList.remove('active');
+        card.classList.remove('show-quiz');
+        scrollToCardTop(card);
+      });
+      
+      quizTab.addEventListener('click', () => {
+        quizTab.classList.add('active');
+        contentTab.classList.remove('active');
+        card.classList.add('show-quiz');
+        scrollToCardTop(card);
+      });
+      
+      // 3. Create Quiz Section
       const quizSection = document.createElement('div');
       quizSection.className = 'quiz-section';
       
@@ -734,7 +800,6 @@ document.addEventListener('DOMContentLoaded', () => {
       quizSection.appendChild(quizContainer);
       
       // Insert before footer nav links
-      const footerNav = card.querySelector('.card-footer-nav');
       if (footerNav) {
         card.insertBefore(quizSection, footerNav);
       } else {
