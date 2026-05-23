@@ -29,49 +29,56 @@
   <!-- Mobile Quick-Nav Bar (Sticky under header) -->
   <div class="mobile-nav-bar">
     <div class="mobile-active-indicator">
-      <span class="mobile-active-index" style="background: var(--color-teal-glow); color: var(--color-teal); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.75rem; font-weight:700;">INTRO</span>
-      <span class="mobile-active-title" style="font-weight: 600; font-size: 0.9rem;">概要と目次</span>
+      <span class="mobile-active-index">INTRO</span>
+      <span class="mobile-active-title">概要と目次</span>
     </div>
-    <button class="mobile-menu-toggle">目次</button>
+    <button class="mobile-menu-toggle" aria-label="目次を開く">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
   </div>
 
-  <!-- Mobile TOC Overlay -->
-  <div class="mobile-toc-overlay">
-    <h3 style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; color: var(--text-primary);">全体目次</h3>
-    <ul class="toc-list">
-      <li class="toc-item active" data-index="0">
-        <button><span class="toc-num">0.</span> はじめに (全体概要)</button>
-      </li>
-      
-      <li style="font-size: 0.75rem; color: var(--text-muted); margin-top: 1rem; margin-bottom: 0.25rem; font-weight:700; letter-spacing:0.05em;">第一部：AIの基礎原理</li>
-      <li class="toc-item" data-index="1"><button><span class="toc-num">1.</span> Neural Networks</button></li>
-      <li class="toc-item" data-index="2"><button><span class="toc-num">2.</span> Tokenization</button></li>
-      <li class="toc-item" data-index="3"><button><span class="toc-num">3.</span> Embeddings</button></li>
-      <li class="toc-item" data-index="4"><button><span class="toc-num">4.</span> Attention</button></li>
-      <li class="toc-item" data-index="5"><button><span class="toc-num">5.</span> Transformers</button></li>
-      
-      <li style="font-size: 0.75rem; color: var(--text-muted); margin-top: 1rem; margin-bottom: 0.25rem; font-weight:700; letter-spacing:0.05em;">第二部：LLMの仕組み</li>
-      <li class="toc-item" data-index="6"><button><span class="toc-num">6.</span> LLMs</button></li>
-      <li class="toc-item" data-index="7"><button><span class="toc-num">7.</span> Context Window</button></li>
-      <li class="toc-item" data-index="8"><button><span class="toc-num">8.</span> Temperature</button></li>
-      <li class="toc-item" data-index="9"><button><span class="toc-num">9.</span> Hallucination</button></li>
-      <li class="toc-item" data-index="10"><button><span class="toc-num">10.</span> Prompt Engineering</button></li>
+  <!-- Mobile TOC Bottom-Sheet (native dialog avoids all iOS stacking bugs) -->
+  <dialog class="mobile-toc-dialog" id="mobileTocDialog">
+    <div class="toc-dialog-header">
+      <h3>全体目次</h3>
+      <button class="toc-dialog-close" aria-label="閉じる">✕</button>
+    </div>
+    <div class="toc-dialog-body">
+      <ul class="toc-list">
+        <li class="toc-item active" data-index="0">
+          <button><span class="toc-num">0.</span> はじめに (全体概要)</button>
+        </li>
+        
+        <li class="toc-section-label">第一部：AIの基礎原理</li>
+        <li class="toc-item" data-index="1"><button><span class="toc-num">1.</span> Neural Networks</button></li>
+        <li class="toc-item" data-index="2"><button><span class="toc-num">2.</span> Tokenization</button></li>
+        <li class="toc-item" data-index="3"><button><span class="toc-num">3.</span> Embeddings</button></li>
+        <li class="toc-item" data-index="4"><button><span class="toc-num">4.</span> Attention</button></li>
+        <li class="toc-item" data-index="5"><button><span class="toc-num">5.</span> Transformers</button></li>
+        
+        <li class="toc-section-label">第二部：LLMの仕組み</li>
+        <li class="toc-item" data-index="6"><button><span class="toc-num">6.</span> LLMs</button></li>
+        <li class="toc-item" data-index="7"><button><span class="toc-num">7.</span> Context Window</button></li>
+        <li class="toc-item" data-index="8"><button><span class="toc-num">8.</span> Temperature</button></li>
+        <li class="toc-item" data-index="9"><button><span class="toc-num">9.</span> Hallucination</button></li>
+        <li class="toc-item" data-index="10"><button><span class="toc-num">10.</span> Prompt Engineering</button></li>
 
-      <li style="font-size: 0.75rem; color: var(--text-muted); margin-top: 1rem; margin-bottom: 0.25rem; font-weight:700; letter-spacing:0.05em;">第三部：モデルの改善・効率化</li>
-      <li class="toc-item" data-index="11"><button><span class="toc-num">11.</span> Transfer Learning</button></li>
-      <li class="toc-item" data-index="12"><button><span class="toc-num">12.</span> Fine-Tuning</button></li>
-      <li class="toc-item" data-index="13"><button><span class="toc-num">13.</span> RLHF</button></li>
-      <li class="toc-item" data-index="14"><button><span class="toc-num">14.</span> LoRA</button></li>
-      <li class="toc-item" data-index="15"><button><span class="toc-num">15.</span> Quantization</button></li>
+        <li class="toc-section-label">第三部：モデルの改善・効率化</li>
+        <li class="toc-item" data-index="11"><button><span class="toc-num">11.</span> Transfer Learning</button></li>
+        <li class="toc-item" data-index="12"><button><span class="toc-num">12.</span> Fine-Tuning</button></li>
+        <li class="toc-item" data-index="13"><button><span class="toc-num">13.</span> RLHF</button></li>
+        <li class="toc-item" data-index="14"><button><span class="toc-num">14.</span> LoRA</button></li>
+        <li class="toc-item" data-index="15"><button><span class="toc-num">15.</span> Quantization</button></li>
 
-      <li style="font-size: 0.75rem; color: var(--text-muted); margin-top: 1rem; margin-bottom: 0.25rem; font-weight:700; letter-spacing:0.05em;">第四部：実践的なシステム構築</li>
-      <li class="toc-item" data-index="16"><button><span class="toc-num">16.</span> RAG</button></li>
-      <li class="toc-item" data-index="17"><button><span class="toc-num">17.</span> Vector Databases</button></li>
-      <li class="toc-item" data-index="18"><button><span class="toc-num">18.</span> AI Agents</button></li>
-      <li class="toc-item" data-index="19"><button><span class="toc-num">19.</span> Chain of Thought</button></li>
-      <li class="toc-item" data-index="20"><button><span class="toc-num">20.</span> Diffusion Models</button></li>
-    </ul>
-  </div>
+        <li class="toc-section-label">第四部：実践的なシステム構築</li>
+        <li class="toc-item" data-index="16"><button><span class="toc-num">16.</span> RAG</button></li>
+        <li class="toc-item" data-index="17"><button><span class="toc-num">17.</span> Vector Databases</button></li>
+        <li class="toc-item" data-index="18"><button><span class="toc-num">18.</span> AI Agents</button></li>
+        <li class="toc-item" data-index="19"><button><span class="toc-num">19.</span> Chain of Thought</button></li>
+        <li class="toc-item" data-index="20"><button><span class="toc-num">20.</span> Diffusion Models</button></li>
+      </ul>
+    </div>
+  </dialog>
 
   <!-- App Main Content Container -->
   <div class="app-container">

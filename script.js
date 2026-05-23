@@ -18,7 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Mobile UI elements
   const mobileToggle = document.querySelector('.mobile-menu-toggle');
-  const mobileOverlay = document.querySelector('.mobile-toc-overlay');
+  const mobileDialog = document.getElementById('mobileTocDialog');
+  const mobileDialogClose = mobileDialog ? mobileDialog.querySelector('.toc-dialog-close') : null;
   const mobileActiveTitle = document.querySelector('.mobile-active-title');
   const mobileActiveIndex = document.querySelector('.mobile-active-index');
 
@@ -498,22 +499,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Mobile Menu Toggle
-  if (mobileToggle) {
+  // Mobile Menu Toggle - use native dialog API
+  if (mobileToggle && mobileDialog) {
     mobileToggle.addEventListener('click', () => {
-      if (mobileOverlay.classList.contains('show')) {
-        closeMobileOverlay();
+      if (mobileDialog.open) {
+        mobileDialog.close();
       } else {
-        openMobileOverlay();
+        mobileDialog.showModal();
       }
     });
   }
 
-  // Close mobile overlay when clicking outside the menu items
-  if (mobileOverlay) {
-    mobileOverlay.addEventListener('click', (e) => {
-      if (e.target === mobileOverlay) {
-        closeMobileOverlay();
+  // Close button inside dialog
+  if (mobileDialogClose && mobileDialog) {
+    mobileDialogClose.addEventListener('click', () => {
+      mobileDialog.close();
+    });
+  }
+
+  // Close dialog when clicking backdrop (outside the sheet)
+  if (mobileDialog) {
+    mobileDialog.addEventListener('click', (e) => {
+      if (e.target === mobileDialog) {
+        mobileDialog.close();
       }
     });
   }
@@ -534,18 +542,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function openMobileOverlay() {
-    mobileOverlay.classList.add('show');
-    mobileToggle.textContent = '閉じる';
-    // Disable scroll on the actual scroll container (app-viewer on mobile)
-    const viewer = document.querySelector('.app-viewer');
-    if (viewer) viewer.style.overflow = 'hidden';
+    if (mobileDialog && !mobileDialog.open) {
+      mobileDialog.showModal();
+    }
   }
 
   function closeMobileOverlay() {
-    mobileOverlay.classList.remove('show');
-    mobileToggle.textContent = '目次';
-    const viewer = document.querySelector('.app-viewer');
-    if (viewer) viewer.style.overflow = '';
+    if (mobileDialog && mobileDialog.open) {
+      mobileDialog.close();
+    }
   }
 
   // Update visual elements
