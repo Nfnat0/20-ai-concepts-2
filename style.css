@@ -107,11 +107,10 @@ a {
   right: 0;
   height: var(--header-height);
   background-color: var(--bg-header);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-color);
   z-index: 100;
-  -webkit-transform: translate3d(0, 0, 10000px);
-  transform: translate3d(0, 0, 10000px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -609,26 +608,25 @@ a {
 
   html, body {
     height: 100%;
-    overflow: hidden; /* Prevent body scrolling */
+    overflow: hidden;
   }
   
   .app-container {
     flex-direction: column;
     height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for iOS address bar */
     overflow: hidden;
     padding-top: 0;
   }
 
   .app-header {
     padding: 0 1.25rem;
-    position: relative; /* Restores normal document flow */
-    top: auto;
-    left: auto;
-    right: auto;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: 100;
-    flex-shrink: 0; /* Prevents compression */
-    -webkit-transform: none !important;
-    transform: none !important;
+    flex-shrink: 0;
   }
 
   .header-meta {
@@ -647,15 +645,13 @@ a {
     background-color: var(--bg-sidebar);
     border-bottom: 1px solid var(--border-color);
     padding: 0.6rem 1.25rem;
-    position: relative; /* Restores normal document flow */
-    top: auto;
-    left: auto;
-    right: auto;
+    position: sticky;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
     height: 45px;
     z-index: 90;
-    flex-shrink: 0; /* Prevents compression */
-    -webkit-transform: none !important;
-    transform: none !important;
+    flex-shrink: 0;
     width: 100%;
   }
 
@@ -689,14 +685,12 @@ a {
     right: 0;
     bottom: 0;
     background-color: rgba(250, 249, 246, 0.98);
+    -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px); /* iOS Safari compatibility */
-    z-index: 9999; /* Raise above all overlays */
-    -webkit-transform: translate3d(0, 0, 9999px);
-    transform: translate3d(0, 0, 9999px);
+    z-index: 9999;
     display: none;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch; /* Smooth iOS touch scrolling */
+    -webkit-overflow-scrolling: touch;
     padding: 1.5rem;
     border-top: 1px solid var(--border-color);
   }
