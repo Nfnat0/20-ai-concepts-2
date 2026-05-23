@@ -71,6 +71,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Card Footer Navigation Click handler
+  const footerNavItems = document.querySelectorAll('.footer-nav-item');
+  footerNavItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      const targetIndex = parseInt(item.getAttribute('data-target'), 10);
+      if (isNaN(targetIndex) || targetIndex < 0 || targetIndex > totalConcepts) return;
+      
+      if (isMobile) {
+        // Mobile behavior: scroll target card into view
+        const targetCard = document.getElementById(`concept-${targetIndex}`);
+        if (targetCard) {
+          const headerOffset = 110; // header height + mobile nav bar height
+          const elementPosition = targetCard.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      } else {
+        // Desktop behavior: change active tab
+        activeIndex = targetIndex;
+        updateView();
+      }
+    });
+  });
+
   // Mobile Menu Toggle
   if (mobileToggle) {
     mobileToggle.addEventListener('click', () => {
