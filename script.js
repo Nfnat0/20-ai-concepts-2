@@ -618,14 +618,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function setupMobileScrollTracking() {
     if (mobileScrollBound) return;
-    const viewer = document.querySelector('.app-viewer');
-    if (!viewer) return;
 
     let ticking = false;
-    viewer.addEventListener('scroll', function () {
+    window.addEventListener('scroll', function () {
       if (!ticking) {
         requestAnimationFrame(() => {
-          updateActiveFromScroll(viewer);
+          updateActiveFromScroll();
           ticking = false;
         });
         ticking = true;
@@ -634,16 +632,15 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileScrollBound = true;
   }
 
-  function updateActiveFromScroll(viewer) {
-    const scrollTop = viewer.scrollTop;
+  function updateActiveFromScroll() {
     const offset = 120; // Account for sticky header + nav bar height
     let newIndex = 0;
 
-    for (let i = cards.length - 1; i >= 0; i--) {
-      if (cards[i].offsetTop - offset <= scrollTop) {
+    for (let i = 0; i < cards.length; i++) {
+      const rect = cards[i].getBoundingClientRect();
+      if (rect.top <= offset) {
         const idStr = cards[i].id;
         newIndex = parseInt(idStr.replace('concept-', ''), 10);
-        break;
       }
     }
 
@@ -655,19 +652,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function destroyMobileScrollTracking() {
     // Scroll listeners with { passive: true } are lightweight; no cleanup needed.
-    // mobileScrollBound stays true to prevent re-binding.
   }
 
   // Helper to scroll to card top nicely
   function scrollToCardTop(cardElement) {
     if (isMobile) {
-      const viewer = document.querySelector('.app-viewer');
-      if (viewer) {
-        viewer.scrollTo({
-          top: cardElement.offsetTop - 120,
-          behavior: 'smooth'
-        });
-      }
+      window.scrollTo({
+        top: window.scrollY + cardElement.getBoundingClientRect().top - 115,
+        behavior: 'smooth'
+      });
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

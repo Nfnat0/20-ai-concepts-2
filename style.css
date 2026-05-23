@@ -615,15 +615,14 @@ a {
   }
 
   html, body {
-    height: 100%;
-    overflow: hidden;
+    height: auto;
+    overflow: visible;
   }
   
   .app-container {
     flex-direction: column;
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
+    height: auto;
+    overflow: visible;
     padding-top: 0;
   }
 
@@ -726,8 +725,8 @@ a {
     margin-left: 0;
     padding: 1.25rem 1rem;
     flex: 1;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: auto;
   }
 
   .concept-cards-container {
